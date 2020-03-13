@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>简单案例</title>
+	<meta name='renderer' content='webkit'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<meta name='viewport'
+				content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+	<link rel='stylesheet' href='../layui/css/layui.css' media='all'>
+	<style>
+		.layui-layer {
+			box-shadow: none !important;
+			border: #a5a5a5 solid 1px;
+		}
+
+		body {
+			padding: 0px 40px 0 40px;
+		}
+
+		.layui-card-header > span {
+			font-weight: bold;
+			font-size: 18px;
+			color: #0C0C0C;
+		}
+
+		.div-img-logo {
+			width: 100%;
+			height: 120px;
+			line-height: 120px;
+			text-align: center;
+		}
+
+		#ul-location {
+			height: auto;
+			min-height: 180px;
+			margin-top: 10px;
+			display: list-item;
+		}
+
+		#ul-location li {
+			margin-left: 5px;
+			margin-right: 5px;
+			height: 30px;
+			line-height: 30px;
+			list-style-type: disc !important;
+
+		}
+
+		#ul-location li a {
+			padding-left: 10px;
+		}
+
+
+		/*栗子 item*/
+		.div-value-item {
+			margin-top: 40px;
+		}
+
+		.span-hint {
+			height: 50px;
+			line-height: 50px;
+			color: #333;
+			font-size: 14px;
+		}
+
+		.div-value-item .item-child {
+			padding: 10px;
+			border: #dedede solid 1px;
+		}
+
+		.item-open-code .code-open {
+			width: 100%;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			color: #a5a5a5;
+			cursor: pointer;
+			background: #dedede;
+		}
+
+		.item-open-code .code-open:hover, .code-group span:hover {
+			color: #1E9FFF;
+		}
+
+		.item-open-code .code-group {
+			display: none;
+		}
+
+		.code-group span {
+			display: block;
+			width: 100%;
+			text-align: center;
+			color: #a5a5a5;
+			cursor: pointer;
+		}
+
+	</style>
+</head>
+<body>
+<div class='main-div'>
+
+	<div class="div-img-logo"><img src="static/OPTable.png"/></div>
+
+
+	<div class="layui-elem-quote"> 插件介绍</div>
+	<div>
+		<br/>
+		<div>layui-table 数据列数过多解决方案。</div>
+		<br/>
+		<a href="https://gitee.com/Hbangmao/layui-op-table" target="_blank" rel="nofollow"
+			 style="color:#01AAED;">码云下载</a>
+		<br/>
+		<br/>
+		<a>QQ群：730991854</a>
+		<br/>
+
+
+	</div>
+
+
+	<div class="values">
+
+		<div class="div-value-item">
+			<div class="layui-elem-quote"><a name="href-demo">一个栗子</a></div>
+			<span class="span-hint">我们将不重要的列安排在扩展区域显示(让我们界面排版更美观一些)</span>
+			<div class="item-child">
+				<table id='test' lay-filter='test'></table>
+
+				<div class="item-open-code">
+					<div class="code-open">展开代码</div>
+					<div class="code-group">
+						<pre class='layui-code'></pre>
+						<span>收起代码</span>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="div-value-item">
+			<div class="layui-elem-quote"><a name="href-op-table">展开显示表格</a></div>
+
+			<div class="item-child">
+				<table id='test1' lay-filter='test1'></table>
+
+				<div class="item-open-code">
+					<div class="code-open">展开代码</div>
+					<div class="code-group">
+						<pre class='layui-code'></pre>
+						<span>收起代码</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="div-value-item">
+			<div class="layui-elem-quote"><a name="href-op-network">展开从网络加载</a></div>
+			<div class="item-child">
+				<table id='test2' lay-filter='test2'></table>
+				<div class="item-open-code">
+					<div class="code-open">展开代码</div>
+					<div class="code-group">
+						<pre class='layui-code'></pre>
+						<span>收起代码</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="div-value-item">
+			<div class="layui-elem-quote"><a name="href-more">不常用的</a></div>
+			<div class="item-child">
+				<table id='test3' lay-filter='test3'></table>
+				<div class="item-open-code">
+					<div class="code-open">展开代码</div>
+					<div class="code-group">
+						<pre class='layui-code'></pre>
+						<span>收起代码</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script type='text/html' id='toolDemo'>
+	<a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a>
+	<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='openAll'>展开全部</a>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='closeAll'>关闭全部</a>
+</script>
+
+<script type='text/html' id='barDemo'>
+	<a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a>
+	<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
+</script>
+
+<script src='../layui/layui.js'></script>
+
+<!--1、普通 案例-->
+<script id='demo-script1'>
+  layui.config({
+    //  配置 layui 第三方扩展组件存放的基础目录
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['opTable'], function () {
+    var opTable = layui.opTable.render({
+      elem: '#test'
+      , id: '#test'
+      , url: 'test.json'
+      , toolbar: '#toolDemo'
+      , cols: [[
+        {field: 'id', title: 'ID', sort: true}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'logins', title: '登录名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+        , {title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
+      ]]
+
+      //  展开的列配置
+      , openCols: [
+        {field: 'sex', title: '性别'}
+        , {field: 'sign', title: '签名'}
+        , {field: 'wealth', title: '财富'}
+        , {field: 'experience', title: '经验值'}
+        , {field: 'experience', title: '积分'}
+        , {field: 'score', title: '分数', edit: true}
+        , {field: 'classify', title: '职业'}
+      ]
+      , edit: function (data) {
+        console.log(data)
+        layer.msg("修改内容已输出到日志窗口");
+      }
+    });
+
+    layui.table.on('toolbar(test)', function (obj) {
+      if (obj.event === 'openAll') {
+        opTable.openAll();
+        layer.msg("展开全部 isOpenAll: " + opTable.isOpenAll());
+      } else if (obj.event === 'closeAll') {
+        opTable.closeAll();
+        layer.msg("关闭全部 isOpenAll: " + opTable.isOpenAll())
+      }
+    });
+
+
+    //  可忽略
+    setTimeout(function () {
+      layui.$('.layui-code').eq(0).text(layui.$('#demo-script1').html())
+      console.log(opTable.config)
+
+    }, 20)
+  });
+</script>
+<!--各种点击监听集-->
+<script>
+  layui.use(["table"], function () {
+    //   ↓↓↓↓↓↓↓↓↓↓ 工具栏点击案例 ↓↓↓↓↓↓↓↓↓↓
+
+
+    //  表格重载案例
+    layui.jquery(".btn-demo-reload").click(function () {
+      console.log("点击了")
+      layui.table.reload("#test", {where: {text: "测试搜索条件"}});
+    });
+
+    //   监听行工具事件
+    layui.table.on('tool(test)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.msg("删除");
+      } else if (obj.event === 'edit') {
+        layer.msg("编辑");
+      }
+    });
+
+  })
+</script>
+
+<!--2、展开 table 案例-->
+<script id='demo-script2'>
+  layui.config({
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['opTable'], function () {
+    layui.opTable.render({
+      elem: '#test1'
+      , id: '#test1'
+      , url: 'test.json'
+      , cols: [[
+        {field: 'id', title: 'ID', sort: true}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+      ]],
+
+      //  展开表格显示
+      openTable: {
+        elem: '#child'
+        , id: 'child'
+        , url: 'test.json'
+        , page: true
+        , cols: [[
+          {field: 'id', title: 'ID'}
+          , {field: 'username', title: '用户名'}
+          , {field: 'logins', title: '登录名'}
+          , {field: 'city', title: '城市'}
+          , {field: 'classify', title: '职业'}
+          , {field: 'wealth', title: '财产值'}
+          , {field: 'experience', title: '人气值'}
+          , {field: 'score', title: '分数'}
+          , {title: '操作', toolbar: '#barDemo', width: 150}
+        ]]
+      }, openType: 1
+
+    });
+
+    setTimeout(function () {
+      layui.$('.layui-code').eq(1).text(layui.$('#demo-script2').html())
+    }, 20)
+
+  });
+</script>
+
+<!--3、网络加载 案例-->
+<script id='demo-script3'>
+  layui.config({
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['opTable'], function () {
+    layui.opTable.render({
+      elem: '#test2'
+      , id: '#test2'
+      , url: 'test.json'
+      , cols: [[
+        {field: 'id', title: 'ID', sort: true}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+      ]],
+
+      //  展开的列从网络加载
+      openNetwork: {
+        openCols: [
+          {field: 'sign', title: '签名'}
+          , {field: 'wealth', title: '财富'}
+          , {field: 'experience', title: '积分'}
+          , {field: 'classify', title: '职业'}
+        ],
+        /**
+         *
+         * @param data 当前行数据
+         * @param success 成功
+         * @param message 显示异常消息[没有数据 出错 等]
+         */
+        onNetwork: function (data, success, message) {
+          // 从网络加载
+          layui.$.ajax({
+            type: "get",
+            url: "test1.json",
+            dataType: "json",
+            data: {id: data.id},
+            async: true,
+            success: function (resp) {
+              if (resp.code === 200) {
+                setTimeout(function () {
+                  if (data.id === 10000) {
+                    message("加载出错");
+                  } else {
+                    success(resp.data);
+                  }
+                }, 200);
+              } else {
+                message("没有数据");
+              }
+            },
+            error: function (err) {
+              message("加载出错");
+            }
+          });
+        }
+      }
+      , sort: function (obj) {
+        console.log(obj)
+      }
+      , opOrientation: 'h'
+    });
+
+
+    setTimeout(function () {
+      layui.$('.layui-code').eq(2).text(layui.$('#demo-script3').html())
+    }, 20)
+  });
+</script>
+
+<!--4、普通的完整操作-->
+<script id='demo-script4'>
+  layui.config({
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['opTable'], function () {
+    layui.opTable.render({
+      elem: '#test3'
+      , id: '#test3'
+      , url: 'test.json'
+      , cols: [[
+        {field: 'id', title: 'ID', sort: true}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+        , {title: '操作', toolbar: '#barDemo', width: 150, align: 'center'}
+      ]]
+
+      //展开的列配置
+      , openCols: [
+        //  1、普通文本
+        {field: 'sign', title: '签名'}
+        //	2、自定义渲染内容
+        , {
+          field: 'wealth', width: 137, title: '财富', templet: function (item) {
+            var arr = [];
+            arr.push('<span class="openTable-item-title">财富：</span>' + '<span>' + item.wealth + '</span>');
+
+            if (item.wealth < 100000) {
+              arr.push('<span class="layui-badge" style="margin-left: 6px">农民</span>')
+            } else {
+              arr.push('<span class="layui-badge" style="margin-left: 6px">富豪</span>')
+            }
+            return arr.join('');
+          }
+        }
+        //  3、当绘制内容时回调
+        , {field: 'experience', title: '积分', edit: true}
+        , {
+          field: 'score', title: '分数', onDraw: function (it) {
+            return it.score + " keg"
+          }
+        }
+        //	5、可选择的类型 select
+        , {
+          field: 'classifyName',
+          title: '职业',
+          type: 'select',
+          items: getTestItems(),
+          /**
+           * 绘制 <option></option>  回调
+           * @param it （循环items参数时的子项）
+           * @param data 当前表格数据
+           * @returns {{isSelect: boolean, id: *, value: *}} 统一返回使用参数
+           */
+          onDraw: function (it, data) {
+            return {id: it.id, value: it.title, isSelect: (it.id === data.classifyId)};
+          },
+
+          /**
+           *发生选择时回调
+           * @param it 下拉选择数据
+           * @param item 当前表格数据
+           * @returns {boolean} true ：代表发生了修改 会回调 edit()相反则不会
+           *
+           * 这样设计考虑到实际环境可能做不到统一
+           */
+          isEdit: function (it, item) {
+            console.log(it.value, item["classifyId"]);
+            //选中的value !=默认数据代表被修改
+            return parseInt(it.value) !== parseInt(item["classifyId"]);
+          }
+        }
+      ]
+
+      //监听排序
+      , sort: function (obj) {
+        console.log(obj)
+      }
+
+      //监听修改
+      , edit: function (obj) {
+        layer.msg("修改内容已打印在控制台");
+        console.log(obj)
+        // 发起 ajax
+        // layui.table.reload('#test');
+      }
+
+      //0：同时只展开一项 1：一直展开不关闭之前  def：0
+      , openType: 0
+
+    });
+
+
+    function getTestItems() {
+      return [{id: 1, title: '作家'}, {id: 2, title: '诗人'}, {id: 3, title: '酱油'}, {id: 4, title: '校长'}];
+    }
+
+
+    //可忽略
+    setTimeout(function () {
+      layui.$('.layui-code').eq(3).text(layui.$('#demo-script4').html())
+    }, 20)
+  });
+</script>
+
+<!--页面代码-->
+<script>
+  layui.use(['table'], function () {
+    var $ = layui.$;
+    layer.open({
+      type: 1
+      , title: '目录'
+      , content: '<ul id="ul-location"></ul>'
+      , id: 'LAY-system-view-popup'
+      , skin: 'layui-layer-admin'
+      , shadeClose: false
+      , closeBtn: 1
+      , shade: 0
+      , offset: ['20px', '90%']
+      , success: function (layero, index) {
+        var items = [
+          {title: "一个栗子", href: 'href-demo'},
+          {title: "展开显示表格", href: 'href-op-table'},
+          {title: "展开从网络加载", href: 'href-op-network'},
+          {title: "不常用的", href: 'href-more'}
+        ];
+        items.forEach(function (item) {
+          $("#ul-location").append("<li> <a href='#" + item.href + "'>" + item.title + "</a></li>");
+          var tags = layui.$("#ul-location").find("li");
+          tags.click(function () {
+            tags.each(function (i) {
+              tags.eq(i).children("a").css("color", "#333");
+            })
+            $(this).children("a").css("color", "#01AAED");
+          });
+
+        });
+      }
+    });
+
+    //	展开代码
+    $(".item-open-code .code-open").click(function () {
+      var that = $(this);
+      var open = parseInt(that.attr('data') || 1);
+      that.parent().find(".code-group").stop().slideToggle(400);
+      that.text(open === 1 ? "收起代码" : "展开代码");
+      that.attr("data", open === 1 ? 0 : 1);
+    });
+
+    $(".code-group span").click(function (e) {
+      layui.stope(e)
+      $(this).parent().parent().find(".code-open").click();
+    });
+
+  });
+
+
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,8 @@
+/.idea
+/.vscode
+/.history
+runtime
+*.log
+.env
+.DS_Store
+.php_cs.cache
