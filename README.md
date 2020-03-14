@@ -5,7 +5,7 @@
 ####  **介绍** 
 
 Layui Table 数据列数过多解决方案。  
-初衷 体验过类似效果的UI，很实用着手在Layui上实现了一套。
+初衷 体验过类似效果的UI很实用，着手在Layui上实现了一套。  
 [演示站点](https://hbangmao.gitee.io/OPTable/index.html)
   
   
@@ -13,20 +13,21 @@ Layui Table 数据列数过多解决方案。
 
 - [x] 展开内容(水平|垂直)显示
 - [x] 展开显示表格
-- [x] 展开内容从网络加载
+- [x] 展开内容从网络加载显示
 - [x] 展开内容自定义标签显示
 
 > 联系方式 
 
-- OPTable技术群: `730991854`
+- 技术群: `730991854`
 - QQ问题处理：1414430109
 
 #### 兼容问题 
 ![兼容问题](https://images.gitee.com/uploads/images/2020/0315/013759_46c24bb2_734930.png "QQ截图20200315011447.png")
 
-#### 打赏
-如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^  
-![微信Pay](https://images.gitee.com/uploads/images/2020/0315/014309_db79c14c_734930.png "ic-wx-pay.png")
+#### 打赏 
+如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^   
+![微信Pay]](https://images.gitee.com/uploads/images/2020/0315/021258_ed18bb88_734930.png "mm_facetoface_collect_qrcode_1584209545852.png")
+
 
 
 #### 快速上手 
@@ -175,7 +176,7 @@ layui.opTable.render({
 
 hubangmao 90后, 热爱 User interaction( UI ) 的Java程序猿 。
 
-受到 贤心 的影响，才做了这一件有趣且有意义的事情
+受到 贤心 的影响，做了这一件非常开心非常Nice的事情
 
 此项目会长期维护，以码云更新为准，祝你使用愉快   
 
