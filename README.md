@@ -26,7 +26,7 @@ Layui Table 数据列数过多解决方案。
 
 #### 打赏 
 如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^   
-![微信Pay](https://images.gitee.com/uploads/images/2020/0315/021424_0779bcae_734930.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0315/021540_bbed19b7_734930.png "ic-wx-pay.png")
 
 
 
@@ -176,9 +176,9 @@ layui.opTable.render({
 
 hubangmao 90后, 热爱 User interaction( UI ) 的Java程序猿 。
 
-受到 贤心 的影响，做了这一件非常开心非常Nice的事情
+做了一件非常开心非常Nice的事情。
 
-此项目会长期维护，以码云更新为准，祝你使用愉快   
+此项目会长期维护，以码云更新为准，祝你使用愉快 。  
 
 ```
 
