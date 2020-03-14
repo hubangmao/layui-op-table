@@ -26,7 +26,7 @@ Layui Table 数据列数过多解决方案。
 
 #### 打赏 
 如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^   
-![微信Pay]](https://images.gitee.com/uploads/images/2020/0315/021258_ed18bb88_734930.png "mm_facetoface_collect_qrcode_1584209545852.png")
+![微信Pay](https://images.gitee.com/uploads/images/2020/0315/021424_0779bcae_734930.png)
 
 
 
