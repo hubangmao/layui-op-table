@@ -4,8 +4,8 @@
   
 ####  **介绍** 
 
-始于 Layui Table 数据列数过多解决方案。  
-初衷 在写之前看到过其他框架类似的效果，很实用着手在Layui上实现了一套。
+Layui Table 数据列数过多解决方案。  
+初衷 体验过类似效果的UI，很实用着手在Layui上实现了一套。
 [演示站点](https://hbangmao.gitee.io/OPTable/index.html)
   
   
@@ -25,7 +25,7 @@
 ![兼容问题](https://images.gitee.com/uploads/images/2020/0315/013759_46c24bb2_734930.png "QQ截图20200315011447.png")
 
 #### 打赏
-如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^
+如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^  
 ![微信Pay](https://images.gitee.com/uploads/images/2020/0315/014309_db79c14c_734930.png "ic-wx-pay.png")
 
 
@@ -72,7 +72,6 @@
 
 
 ##### 展开显示表格
-
 
 ```
  layui.opTable.render({
@@ -172,18 +171,15 @@ layui.opTable.render({
 
 
 ```
-过程中出问题了先自己思考思考 
+过程中出问题了先自己捋一捋 
 
 hubangmao 90后, 热爱 User interaction( UI ) 的Java程序猿 。
 
 受到 贤心 的影响，才做了这一件有趣且有意义的事情
 
-此项目会长期维护，祝你使用愉快  :bowtie: 
+此项目会长期维护，以码云更新为准，祝你使用愉快   
 
 ```
-
-#### 摘自 layui 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0315/015816_00dced2e_734930.png "QQ截图20200315015722.png")
 
 
 
