@@ -2,22 +2,29 @@
 <html>
 <head>
 	<meta charset='utf-8'>
-	<title>简单案例</title>
+	<title>OPTable</title>
 	<meta name='renderer' content='webkit'>
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<meta name='viewport'
 				content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0'>
 	<link rel='stylesheet' href='../layui/css/layui.css' media='all'>
+	<link type="text/css" rel="stylesheet" href="static/iconfont.css" media="all"/>
+	<link rel="shortcut icon" href="static/logo.png"/>
 	<style>
 		.layui-layer {
 			box-shadow: none !important;
 			border: #a5a5a5 solid 1px;
 		}
 
-		body {
-			padding: 0px 40px 0 40px;
+		.color-select {
+			color: #1E9FFF;
 		}
 
+		body {
+			padding: 0 40px 0 40px;
+		}
+
+		/*头部*/
 		.layui-card-header > span {
 			font-weight: bold;
 			font-size: 18px;
@@ -26,14 +33,88 @@
 
 		.div-img-logo {
 			width: 100%;
-			height: 120px;
+			height: 100px;
+			position: fixed;
+			top: 0;
+			z-index: 999;
+			background: #fff;
 			line-height: 120px;
-			text-align: center;
+			border-bottom: #dedede double 1px;
+			margin-bottom: 10px;
 		}
 
+		.div-img-logo span {
+			margin-left: 20px;
+			padding: 4px;
+		}
+
+		/*简介*/
+		.item-min-about {
+			border-left: #1E9FFF solid 6px;
+			margin-bottom: 20px;
+			background: rgba(30, 159, 255, 0.25);
+			height: 80px;
+			border-radius: 8px;
+			padding: 5px 5px 5px 20px;
+		}
+
+		.item-min-about div {
+			width: 80%;
+			display: inline-block;
+			height: 25px;
+			line-height: 25px;
+		}
+
+		/*小标题*/
+		.item-min-title {
+			width: 100%;
+			display: inline-block;
+			height: 25px;
+			line-height: 25px;
+			color: #0C0C0C;
+			font-size: 16px;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+
+		.item-min-value {
+			width: 100%;
+			display: inline-block;
+			height: 30px;
+			margin-left: 20px;
+			line-height: 30px;
+		}
+
+		.b-ic-group .item {
+			width: 60px;
+			display: inline-block;
+			text-align: center;
+			margin-right: 10px;
+			vertical-align: top;
+		}
+
+		.b-ic-group .item img {
+			width: 30px;
+			height: 30px;
+		}
+
+		.b-ic-group .item span {
+			display: inline-block;
+			margin-top: 4px;
+			width: 60px;
+			font-size: 12px;
+		}
+
+		/*内容主体*/
+		.value-group {
+			margin-top: 120px;
+			width: 100%;
+		}
+
+		/*定位导航 弹出层*/
 		#ul-location {
 			height: auto;
-			min-height: 180px;
+			min-height: 220px;
 			margin-top: 10px;
 			display: list-item;
 		}
@@ -49,8 +130,12 @@
 
 		#ul-location li a {
 			padding-left: 10px;
+			cursor: pointer;
 		}
 
+		.div-value-item:first-child {
+			margin-top: 0;
+		}
 
 		/*栗子 item*/
 		.div-value-item {
@@ -95,100 +180,189 @@
 			cursor: pointer;
 		}
 
+		.code {
+			background-color: #f9fafc;
+			padding: 0 4px;
+			border: 1px solid #eaeefb;
+			border-radius: 4px
+		}
 	</style>
 </head>
 <body>
+
 <div class='main-div'>
+	<div class="div-img-logo">
+		<img src="static/OPTable.png"/>
+		<span class="layui-badge layui-bg-blue">使用手册</span>
+	</div>
+	<div class="value-group">
 
-	<div class="div-img-logo"><img src="static/OPTable.png"/></div>
+		<div class="values-main">
 
+			<div class="div-value-item">
+				<div class="item-min-title">简介</div>
+				<div class="item-min-about">
+					<div>
+						始于
+						<a href="https://www.layui.com/doc/modules/table.html" class="color-select"
+							 target="_blank"
+							 rel="nofollow">Layui Table</a>
+						数据列数过多解决方案。
+					</div>
+					<div>
+						<span class="color-select">初衷</span> 在写之前有在其他框架看到过类似的效果，还不错 " 实用 " 着手在Layui上实现了一套。
+					</div>
+					<div>
+						此项目 <span class="color-select"> 长期维护 </span>
+					</div>
 
-	<div class="layui-elem-quote"> 插件介绍</div>
-	<div>
-		<br/>
-		<div>layui-table 数据列数过多解决方案。</div>
-		<br/>
-		<a href="https://gitee.com/Hbangmao/layui-op-table" target="_blank" rel="nofollow"
-			 style="color:#01AAED;">码云下载</a>
-		<br/>
-		<br/>
-		<a>QQ群：730991854</a>
-		<br/>
+				</div>
 
+				<div class="item-min-value">
+					开源地址： <a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
+									 rel="nofollow">码云下载</a>
+				</div>
+				<div class="item-min-value">
+					<a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
+						 rel="nofollow">Fly社区交流</a>
+				</div>
+				<div class="item-min-value"><a>QQ群：<span class="code">730991854</span></a></div>
+				<div class="item-min-value">
+					统一Bug异常反馈 <a href="https://gitee.com/Hbangmao/layui-op-table/issues" class="color-select"
+											 target="_blank"
+											 rel="nofollow"> issues</a>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="item-min-title">兼容</div>
+				<div class="b-ic-group">
+					<div class="item">
+						<img src="static/ic/ic-ie.png">
+						<span>IE9+</span>
+					</div>
+					<div class="item">
+						<img src="static/ic/ic-google.png">
+						<span>Chrome</span>
+					</div>
+					<div class="item">
+						<img src="static/ic/ic-hh.png">
+						<span>火狐</span>
+					</div>
+					<div class="item">
+						<img src="static/ic/ic-xdllq.png">
+						<span>现代浏览器</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="item-min-title">作者</div>
+				<span>hubangmao, 热爱 User interaction( UI ) 的Java程序猿, 如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^</span>
+			</div>
+
+			<div class="div-value-item">
+				<div class="item-min-title">打赏</div>
+				<div style="width:152px;">
+					<img src="static/ic/ic-wx-pay.png"/>
+					<span style="display: inline-block;width: 100%;text-align: center ;margin-top: 4px">觉得不错就支持一下吧</span>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="href-demo">Hello Word</a></div>
+				<span class="span-hint">我们将不重要的列安排在扩展区域显示(让我们界面排版更美观一些)</span>
+				<div class="item-child">
+					<table id='test' lay-filter='test'></table>
+
+					<div class="item-open-code">
+						<div class="code-open">展开代码</div>
+						<div class="code-group">
+							<pre class='layui-code layui-code-test'></pre>
+							<span>收起代码</span>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="href-op-table">展开显示表格</a></div>
+				<span class="span-hint">当展开内容数据结构为列表时</span>
+				<div class="item-child">
+					<table id='test1' lay-filter='test1'></table>
+
+					<div class="item-open-code">
+						<div class="code-open">展开代码</div>
+						<div class="code-group">
+							<pre class='layui-code layui-code-test1'></pre>
+							<span>收起代码</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="href-op-network">展开从网络加载</a></div>
+				<span class="span-hint">展开类容过大时可能需要请求服务器获取数据</span>
+				<div class="item-child">
+					<table id='test2' lay-filter='test2'></table>
+					<div class="item-open-code">
+						<div class="code-open">展开代码</div>
+						<div class="code-group">
+							<pre class='layui-code layui-code-test2'></pre>
+							<span>收起代码</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote">
+					<a name="href-more">相关动态操作</a></div>
+				<span class="span-hint">展示一些动态操作的栗子</span>
+				<div class="item-child">
+					<table id='test3' lay-filter='test3'></table>
+					<div class="item-open-code">
+						<div class="code-open">展开代码</div>
+						<div class="code-group">
+							<pre class='layui-code layui-code-test3'></pre>
+							<span>收起代码</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="demo-kpzx">可配置项</a></div>
+				<span class="span-hint">render()函数 支持 layui table 所参数</span>
+				<div class="item-child">
+					<table id='demo-kpzx' lay-filter='demo-kpzx'></table>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote">
+					<a name="demo-qjff">全局方法</a>
+				</div>
+				<div class="item-child">
+					<table id='demo-qjff' lay-filter='demo-qjff'></table>
+				</div>
+			</div>
+
+		</div>
 
 	</div>
 
-
-	<div class="values">
-
-		<div class="div-value-item">
-			<div class="layui-elem-quote"><a name="href-demo">一个栗子</a></div>
-			<span class="span-hint">我们将不重要的列安排在扩展区域显示(让我们界面排版更美观一些)</span>
-			<div class="item-child">
-				<table id='test' lay-filter='test'></table>
-
-				<div class="item-open-code">
-					<div class="code-open">展开代码</div>
-					<div class="code-group">
-						<pre class='layui-code'></pre>
-						<span>收起代码</span>
-					</div>
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class="div-value-item">
-			<div class="layui-elem-quote"><a name="href-op-table">展开显示表格</a></div>
-
-			<div class="item-child">
-				<table id='test1' lay-filter='test1'></table>
-
-				<div class="item-open-code">
-					<div class="code-open">展开代码</div>
-					<div class="code-group">
-						<pre class='layui-code'></pre>
-						<span>收起代码</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="div-value-item">
-			<div class="layui-elem-quote"><a name="href-op-network">展开从网络加载</a></div>
-			<div class="item-child">
-				<table id='test2' lay-filter='test2'></table>
-				<div class="item-open-code">
-					<div class="code-open">展开代码</div>
-					<div class="code-group">
-						<pre class='layui-code'></pre>
-						<span>收起代码</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="div-value-item">
-			<div class="layui-elem-quote"><a name="href-more">不常用的</a></div>
-			<div class="item-child">
-				<table id='test3' lay-filter='test3'></table>
-				<div class="item-open-code">
-					<div class="code-open">展开代码</div>
-					<div class="code-group">
-						<pre class='layui-code'></pre>
-						<span>收起代码</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
+	<div style="text-align: center">
+		<img src="static/logo.png" title="logo" style="height: 80px;margin-top: 80px"/>
 	</div>
+
+</div>
 </div>
 
 <script type='text/html' id='toolDemo'>
-	<a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a>
-	<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='openAll'>展开全部</a>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='closeAll'>关闭全部</a>
 </script>
@@ -198,10 +372,21 @@
 	<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
 </script>
 
+<script type="text/html" id="moreDemo">
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='reload'>重载</a>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='getLayuiTable'>查看当前Layui Table 对象</a>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='opOrientation'>(水平|垂直)排列</a>
+
+	<a class='layui-btn   layui-btn-xs' lay-event='openIndex'>展开(指定下标)</a>
+	<a class='layui-btn   layui-btn-xs' lay-event='closeIndex'>关闭(指定下标)</a>
+	<a class='layui-btn   layui-btn-xs' lay-event='toggleOpenIndex'>toggle(指定下标)</a>
+
+</script>
+
 <script src='../layui/layui.js'></script>
 
 <!--1、普通 案例-->
-<script id='demo-script1'>
+<script id='layui-code-test'>
   layui.config({
     //  配置 layui 第三方扩展组件存放的基础目录
     base: '../opTable'
@@ -211,7 +396,7 @@
     var opTable = layui.opTable.render({
       elem: '#test'
       , id: '#test'
-      , url: 'test.json'
+      , url: 'static/test.json'
       , toolbar: '#toolDemo'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
@@ -234,7 +419,7 @@
       , edit: function (data) {
         console.log(data)
         layer.msg("修改内容已输出到日志窗口");
-      }
+      }, openType: 1
     });
 
     layui.table.on('toolbar(test)', function (obj) {
@@ -250,39 +435,13 @@
 
     //  可忽略
     setTimeout(function () {
-      layui.$('.layui-code').eq(0).text(layui.$('#demo-script1').html())
-      console.log(opTable.config)
-
+      layui.$('.layui-code-test').text(layui.$('#layui-code-test').html())
     }, 20)
   });
 </script>
-<!--各种点击监听集-->
-<script>
-  layui.use(["table"], function () {
-    //   ↓↓↓↓↓↓↓↓↓↓ 工具栏点击案例 ↓↓↓↓↓↓↓↓↓↓
-
-
-    //  表格重载案例
-    layui.jquery(".btn-demo-reload").click(function () {
-      console.log("点击了")
-      layui.table.reload("#test", {where: {text: "测试搜索条件"}});
-    });
-
-    //   监听行工具事件
-    layui.table.on('tool(test)', function (obj) {
-      var data = obj.data;
-      if (obj.event === 'del') {
-        layer.msg("删除");
-      } else if (obj.event === 'edit') {
-        layer.msg("编辑");
-      }
-    });
-
-  })
-</script>
 
 <!--2、展开 table 案例-->
-<script id='demo-script2'>
+<script id='layui-code-test1'>
   layui.config({
     base: '../opTable'
   }).extend({
@@ -291,18 +450,18 @@
     layui.opTable.render({
       elem: '#test1'
       , id: '#test1'
-      , url: 'test.json'
+      , url: 'static/test.json'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
         , {field: 'username', title: '用户名', edit: true}
         , {field: 'city', title: '城市', edit: true}
       ]],
 
-      //  展开表格显示
+      //  展开显示表格 参数支持layui所有参数
       openTable: {
         elem: '#child'
         , id: 'child'
-        , url: 'test.json'
+        , url: 'static/test.json'
         , page: true
         , cols: [[
           {field: 'id', title: 'ID'}
@@ -315,19 +474,19 @@
           , {field: 'score', title: '分数'}
           , {title: '操作', toolbar: '#barDemo', width: 150}
         ]]
-      }, openType: 1
+      }
 
     });
 
     setTimeout(function () {
-      layui.$('.layui-code').eq(1).text(layui.$('#demo-script2').html())
+      layui.$('.layui-code-test1').text(layui.$('#layui-code-test1').html())
     }, 20)
 
   });
 </script>
 
 <!--3、网络加载 案例-->
-<script id='demo-script3'>
+<script id='layui-code-test2'>
   layui.config({
     base: '../opTable'
   }).extend({
@@ -336,7 +495,7 @@
     layui.opTable.render({
       elem: '#test2'
       , id: '#test2'
-      , url: 'test.json'
+      , url: 'static/test.json'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
         , {field: 'username', title: '用户名', edit: true}
@@ -361,7 +520,7 @@
           // 从网络加载
           layui.$.ajax({
             type: "get",
-            url: "test1.json",
+            url: "static/test1.json",
             dataType: "json",
             data: {id: data.id},
             async: true,
@@ -392,22 +551,23 @@
 
 
     setTimeout(function () {
-      layui.$('.layui-code').eq(2).text(layui.$('#demo-script3').html())
+      layui.$('.layui-code-test2').text(layui.$('#layui-code-test2').html())
     }, 20)
   });
 </script>
 
 <!--4、普通的完整操作-->
-<script id='demo-script4'>
+<script id='layui-code-test3'>
   layui.config({
     base: '../opTable'
   }).extend({
     opTable: '/opTable'
   }).use(['opTable'], function () {
-    layui.opTable.render({
+    var opTable = layui.opTable.render({
       elem: '#test3'
       , id: '#test3'
-      , url: 'test.json'
+      , url: 'static/test.json'
+      , toolbar: '#moreDemo'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
         , {field: 'username', title: '用户名', edit: true}
@@ -479,84 +639,321 @@
 
       //监听修改
       , edit: function (obj) {
-        layer.msg("修改内容已打印在控制台");
+        layer.msg("已输出到日志窗口");
         console.log(obj)
-        // 发起 ajax
-        // layui.table.reload('#test');
       }
 
-      //0：同时只展开一项 1：一直展开不关闭之前  def：0
+      // 见文档
       , openType: 0
 
     });
+    var status;
+    // 监听工具栏
+    layui.table.on('toolbar(test3)', function (obj) {
+      // 1、重载
+      if (obj.event === "reload") {
+        opTable.reload({opOrientation: "h"});
+      }
+      // 2、获取当前 layui table 指针
+      else if (obj.event === "getLayuiTable") {
+        layer.msg("已输出到日志窗口");
+        console.log(opTable.config.table)
+      }
+      // 3、水平或垂直排列内容
+      else if (obj.event === "opOrientation") {
+        opTable.reload({opOrientation: opTable.config.opOrientation === "v" ? "h" : "v"});
+        setTimeout(function () {
+          opTable.openIndex(0);
+          layer.msg(opTable.config.opOrientation);
+        }, 40)
+      }
+      // 4、展开指定下标
+      else if (obj.event === "openIndex") {
+        status = opTable.openIndex(0);
+        layer.msg(status);
+      }
+      // 5、关闭指定下标
+      else if (obj.event === "closeIndex") {
+        status = opTable.closeIndex(0);
+        layer.msg(status);
+      }
+      // 6、指定下标 关闭则展开 反之亦然
+      else if (obj.event === "toggleOpenIndex") {
+        status = opTable.toggleOpenIndex(0);
+        layer.msg(status);
+      }
+    });
 
+    //   监听行工具事件
+    layui.table.on('tool(test3)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.msg("删除");
+      } else if (obj.event === 'edit') {
+        layer.msg("编辑");
+      }
+    });
 
     function getTestItems() {
       return [{id: 1, title: '作家'}, {id: 2, title: '诗人'}, {id: 3, title: '酱油'}, {id: 4, title: '校长'}];
     }
 
-
     //可忽略
     setTimeout(function () {
-      layui.$('.layui-code').eq(3).text(layui.$('#demo-script4').html())
+      layui.$('.layui-code-test3').text(layui.$('#layui-code-test3').html())
     }, 20)
   });
 </script>
 
 <!--页面代码-->
 <script>
-  layui.use(['table'], function () {
+  layui.config({
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['table'], function () {
     var $ = layui.$;
-    layer.open({
-      type: 1
-      , title: '目录'
-      , content: '<ul id="ul-location"></ul>'
-      , id: 'LAY-system-view-popup'
-      , skin: 'layui-layer-admin'
-      , shadeClose: false
-      , closeBtn: 1
-      , shade: 0
-      , offset: ['20px', '90%']
-      , success: function (layero, index) {
-        var items = [
-          {title: "一个栗子", href: 'href-demo'},
-          {title: "展开显示表格", href: 'href-op-table'},
-          {title: "展开从网络加载", href: 'href-op-network'},
-          {title: "不常用的", href: 'href-more'}
-        ];
-        items.forEach(function (item) {
-          $("#ul-location").append("<li> <a href='#" + item.href + "'>" + item.title + "</a></li>");
-          var tags = layui.$("#ul-location").find("li");
-          tags.click(function () {
-            tags.each(function (i) {
-              tags.eq(i).children("a").css("color", "#333");
-            })
-            $(this).children("a").css("color", "#01AAED");
-          });
 
+    var root = {
+      init: function () {
+        layer.open({
+          type: 1
+          , title: '导航'
+          , content: '<ul id="ul-location"></ul>'
+          , id: 'LAY-system-view-popup'
+          , skin: 'layui-layer-admin'
+          , shadeClose: false
+          , closeBtn: 1
+          , shade: 0
+          , offset: ['40%', '90%']
+          , success: function (layero, index) {
+            var items = [
+              {title: "Hello Word", href: 'href-demo'},
+              {title: "展开显示表格", href: 'href-op-table'},
+              {title: "展开从网络加载", href: 'href-op-network'},
+              {title: "相关动态操作", href: 'href-more'},
+              {title: "可配置项", href: 'demo-kpzx'},
+              {title: "全局方法", href: 'demo-qjff'},
+            ];
+            items.forEach(function (item) {
+              $("#ul-location").append("<li> <a data='" + item.href + "'>" + item.title + "</a></li>");
+              var tags = layui.$("#ul-location").find("li");
+              tags.unbind("click").click(function () {
+                tags.each(function (i) {
+                  tags.eq(i).children("a").css("color", "#333");
+                })
+                $(this).children("a").css("color", "#1E9FFF");
+
+                $(".layui-elem-quote a").css("color", "#777")
+                var soDom = 'a[name="' + $(this).children('a').attr('data') + '"]';
+                console.log($(soDom).offset().top)
+                $('html,body').animate({scrollTop: $(soDom).offset().top - 130}, 500, null, function () {
+                  console.log("执行结束")
+                  $(soDom).css('color', '#1E9FFF').fadeOut(80).fadeIn(40);
+                });
+              });
+
+
+            });
+          }
+        });
+        //	展开代码
+        $(".item-open-code .code-open").click(function () {
+          var that = $(this);
+          var open = parseInt(that.attr('data') || 1);
+          that.parent().find(".code-group").stop().slideToggle(400);
+          that.text(open === 1 ? "收起代码" : "展开代码");
+          that.attr("data", open === 1 ? 0 : 1);
+        });
+
+        $(".code-group span").click(function (e) {
+          layui.stope(e)
+          $(this).parent().parent().find(".code-open").click();
+        });
+
+        this.initTableKpzx();
+        this.initTableQjff();
+      }
+      , initTableKpzx: function () {
+
+
+        /*可配置项*/
+        layui.opTable.render({
+          elem: '#demo-kpzx'
+          , id: '#demo-kpzx'
+          , cols: [[
+            {field: 'parameter', title: '参数', width: 120}
+            , {field: 'type', title: '类型', width: 120}
+            , {field: 'doc', title: '描述'}
+            , {
+              field: 'demo', title: '栗子', templet: function (it) {
+                return it.demo || " 无 ";
+              }
+            }
+          ]]
+          , data: [
+            {
+              parameter: 'openCols',
+              type: 'Array',
+              doc: '展开列配置，类似 layui.table 【cols】',
+              demo: "",
+              code: $(".openCols-demo").html()
+            },
+            {
+              parameter: 'opOrientation',
+              type: 'String',
+              doc: '展开的item的展示方式： (垂直v|水平h)  默认为垂直排序',
+              demo: "",
+              code: ""
+            },
+            {
+              parameter: 'openType',
+              type: 'Number',
+              doc: 'openType 0、默认效果同时只展开一项  1、点击展开时不关闭之前展开的类容',
+              demo: "",
+              code: ""
+            },
+            {
+              parameter: 'openNetwork',
+              type: 'Object',
+              doc: '详见【展开网络加载】案例',
+              demo: "",
+              code: $("#layui-code-test2").html()
+            },
+            {
+              parameter: 'edit',
+              type: 'function',
+              doc: '当监听到修改后回调',
+              demo: "",
+              code: ""
+            },
+            {
+              parameter: 'sort',
+              type: 'function',
+              doc: '当监听到排序后回调',
+              demo: "",
+              code: ""
+            }
+
+          ]
+          , openCols: [{
+            field: 'code', title: '示例值', templet: function (it) {
+              return it.code ? "<pre class='layui-code'>" + it.code + "</pre>" : "没有示例代码";
+            }
+          }]
         });
       }
-    });
+      // 全局方法
+      , initTableQjff: function () {
+        layui.table.render({
+          elem: '#demo-qjff'
+          , id: '#demo-qjff'
+          , cols: [[
+            {field: 'name', title: '方法名称'}
+            , {field: 'doc', title: '说明'}
+            , {field: 'parameter', title: '方法参数'}
+            , {field: 'return', title: '返回值'}
+          ]]
+          , data: [
+            {
+              name: 'reload()',
+              doc: '重载',
+              parameter: '重载参数',
+              return: "返回当前实例(一般用于 连续调用)"
+            },
+            {
+              name: 'openAll()',
+              doc: '展开全部',
+              parameter: '无',
+              return: ""
+            },
+            {
+              name: 'closeAll()',
+              doc: '关闭全部',
+              parameter: '无',
+              return: "无"
+            },
+            {
+              name: 'openIndex()',
+              doc: '通过下标展开一行',
+              parameter: 'index',
+              return: "( true | false ) 成功或失败 false一般为下标越界"
+            },
+            {
+              name: 'closeIndex()',
+              doc: '通过下标关闭一行',
+              parameter: 'index',
+              return: "( true | false ) 成功或失败 false一般为下标越界"
+            },
+            {
+              name: 'toggleOpenIndex()',
+              doc: '指定下标 关闭则展开 反之亦然',
+              parameter: 'index',
+              return: "( true | false ) 成功或失败 false一般为下标越界"
+            },
+            {
+              name: 'isOpenAll()',
+              doc: '当前状态是否为全部打开的',
+              parameter: 'index',
+              return: "( true | false )"
+            }
+          ]
+        });
+      }
+    };
 
-    //	展开代码
-    $(".item-open-code .code-open").click(function () {
-      var that = $(this);
-      var open = parseInt(that.attr('data') || 1);
-      that.parent().find(".code-group").stop().slideToggle(400);
-      that.text(open === 1 ? "收起代码" : "展开代码");
-      that.attr("data", open === 1 ? 0 : 1);
-    });
-
-    $(".code-group span").click(function (e) {
-      layui.stope(e)
-      $(this).parent().parent().find(".code-open").click();
-    });
+    setTimeout(function () {
+      root.init();
+    }, 50)
 
   });
 
 
 </script>
 
+
+<!--各种点击监听集-->
+<script>
+  layui.use(["table"], function () {
+    //   ↓↓↓↓↓↓↓↓↓↓ 工具栏点击案例 ↓↓↓↓↓↓↓↓↓↓
+
+    //   监听行工具事件
+    layui.table.on('tool(test)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.msg("删除");
+      } else if (obj.event === 'edit') {
+        layer.msg("编辑");
+      }
+    });
+
+  })
+</script>
+
+<script class="openCols-demo" type="text/html">
+	layui.opTable.render({
+	elem: '#test'
+	, id: '#test'
+	//  展开的列配置
+	, openCols: [
+	{
+	field: 'sex', title: '性别', templet: function (it) {
+	return "<span>返回自定义排版</span>"
+	}
+	}
+	, {
+	field: 'sign', title: '签名', onDraw: function (it) {
+	return it.sign + " 参数"
+	}
+	}
+	, {field: 'wealth', title: '财富'}
+	, {field: 'experience', title: '经验值'}
+	, {field: 'experience', title: '积分'}
+	, {field: 'score', title: '分数', edit: true}
+	, {field: 'classify', title: '职业'}
+	]
+	});
+</script>
 </body>
 </html>
 

@@ -8,9 +8,11 @@ layui.define(['form', 'table'], function (exports) {
   var $ = layui.$
       , table = layui.table
       , form = layui.form
-      , VERSION = 1.0, MOD_NAME = 'opTable', ELEM = '.layui-opTable', ON = 'on', OFF = 'off'
+      , VERSION = 1.0, MOD_NAME = 'opTable'
+      // 展开 , 关闭
+      , ON = 'on', OFF = 'off', KEY_STATUS = "status"
       //openType 0、默认效果同时只展开一项  1、点击展开多项 2、 展开全部  3、关闭全部
-      , OPEN_DEF = 0, OPEN_NO_CLOSE = 1, OPEN_ALL = 3, CLOSE_ALL = 4
+      , OPEN_DEF = 0, OPEN_NO_CLOSE = 1, OPEN_ALL = 2, CLOSE_ALL = 3
       //外部接口
       , opTable = {
         index: layui.opTable ? (layui.opTable.index + 10000) : 0
@@ -32,6 +34,9 @@ layui.define(['form', 'table'], function (exports) {
       , getOpenClickClass = function (elem, isAddClickClass) {
         return elem.replace("#", '').replace(".", '') + (isAddClickClass ? 'opTable-i-table-open' : '')
       }
+      , getOpenAllClickClass = function (elem) {
+        return getOpenClickClass(elem, true) + "-all"
+      }
       //操作当前实例
       , thisIns = function () {
         var that = this
@@ -40,31 +45,80 @@ layui.define(['form', 'table'], function (exports) {
 
         return {
           reload: function (options) {
-            //暂时停用 更新操作走 render()
-            return that.reload.call(that, options);
+            that.config = $.extend(that.config, options);
+            that.config.cols[0].splice(0, 1);
+            that.render();
+            return this;
           }
           , config: options
+
           // 展开全部
           , openAll: function () {
             // 表格 同时只支持展开一项
-            if (that.config.openTable) {
+            if (that.config.openTable || this.isOpenAll()) {
               return;
             }
             var def = that.config.openType;
             that.config.openType = OPEN_ALL;
             $("." + getOpenClickClass(that.config.elem, true)).parent().click();
             that.config.openType = def;
+
+            $("." + getOpenAllClickClass(that.config.elem))
+                .addClass("opTable-open-dow")
+                .removeClass("opTable-open-up")
+                .attr(KEY_STATUS, ON);
           }
           // 关闭全部
           , closeAll: function () {
-            // 表格 同时只支持展开一项
-            if (that.config.openTable) {
+            if (!this.isOpenAll()) {
               return;
             }
+
             var def = that.config.openType;
             that.config.openType = CLOSE_ALL;
             $("." + getOpenClickClass(that.config.elem, true)).parent().click();
             that.config.openType = def;
+
+            $("." + getOpenAllClickClass(that.config.elem))
+                .addClass("opTable-open-up")
+                .removeClass("opTable-open-dow")
+                .attr(KEY_STATUS, ON);
+          }
+
+          // 通过下标展开一项
+          , openIndex: function (index) {
+            var dom = $("." + getOpenClickClass(that.config.elem, true)).eq(index);
+            if (dom.length <= 0) {
+              return false;
+            }
+            var status = dom.attr(KEY_STATUS);
+            if (status === ON) {
+              return true;
+            }
+            dom.click();
+            return true;
+          }
+          // 通过下标展开一项
+          , closeIndex: function (index) {
+            var dom = $("." + getOpenClickClass(that.config.elem, true)).eq(index);
+            if (dom.length <= 0) {
+              return false;
+            }
+            var status = dom.attr(KEY_STATUS);
+            if (status === OFF) {
+              return true;
+            }
+            dom.click();
+            return true;
+          }
+          // 当前展开状态取反
+          , toggleOpenIndex: function (index) {
+            var dom = $("." + getOpenClickClass(that.config.elem, true)).eq(index);
+            if (dom.length <= 0) {
+              return false;
+            }
+            dom.parent().click();
+            return true;
           }
           // 当前是否全部展开
           , isOpenAll: function () {
@@ -88,9 +142,11 @@ layui.define(['form', 'table'], function (exports) {
 
   //默认配置
   Class.prototype.config = {
-    openType: OPEN_DEF,
+    openType: OPEN_DEF
     // 展开的item (垂直v|水平h) 排序
-    opOrientation: 'v'
+    , opOrientation: 'v'
+    // layui table 对象
+    , table: null
   };
 
   //渲染视图
@@ -103,6 +159,7 @@ layui.define(['form', 'table'], function (exports) {
         , openTable = options.openTable || null
         , done = options.done;
 
+
     // 展开显示表格 同时只支持展开一个
     options.openType = openTable ? OPEN_DEF : options.openType;
 
@@ -111,13 +168,15 @@ layui.define(['form', 'table'], function (exports) {
     colArr.splice(0, 0, {
       align: 'left',
       width: 50,
+      title: openTable ? ''
+          : '<i class="opTable-i-table-open ' + getOpenAllClickClass(options.elem) + ' " ' + KEY_STATUS + '="off"  title="(展开|关闭)全部"></i>',
       templet: function (item) {
         // 解决页面多个表格问题
         var cla = getOpenClickClass(options.elem, false);
 
         openItemData[cla] = openItemData[cla] || {};
         openItemData[cla][item.LAY_INDEX] = item;
-        return "<i class='opTable-i-table-open " + cla + "opTable-i-table-open' status='off'  data='"
+        return "<i class='opTable-i-table-open " + cla + "opTable-i-table-open' " + KEY_STATUS + "='off'  data='"
             //  把当前列的数据绑定到控件
             + item.LAY_INDEX
             + " ' elem='"
@@ -128,7 +187,7 @@ layui.define(['form', 'table'], function (exports) {
 
 
     //  2、表格Render
-    table.render(
+    options.table = table.render(
         $.extend({
           done: function (res, curr, count) {
             initExpandedListener();
@@ -141,8 +200,7 @@ layui.define(['form', 'table'], function (exports) {
 
     // 3、展开事件
     function initExpandedListener() {
-      elem = "." + getOpenClickClass(options.elem, true);
-      $(elem)
+      $("." + getOpenClickClass(options.elem, true))
           .parent()
           .unbind("click")
           .click(function () {
@@ -150,19 +208,18 @@ layui.define(['form', 'table'], function (exports) {
                 , _this = this
                 , itemIndex = parseInt(that.attr("data"))
                 , bindOpenData = openItemData[that.attr("elem")][itemIndex]
-                , status = that.attr("status") === 'on'
+                , status = that.attr(KEY_STATUS) === 'on'
                 // 操作倒三角
                 , dowDom = that.parent().parent().parent().parent().find(".opTable-open-dow")
-                ,
                 // 展开的tr
-                addTD = that.parent().parent().parent().parent().find(".opTable-open-td");
+                , addTD = that.parent().parent().parent().parent().find(".opTable-open-td");
 
             // 关闭全部
             if (options.openType === CLOSE_ALL) {
               dowDom
                   .addClass("opTable-open-up")
                   .removeClass("opTable-open-dow")
-                  .attr("status", OFF);
+                  .attr(KEY_STATUS, OFF);
               addTD.slideUp(100, function () {
                 addTD.remove();
               });
@@ -174,7 +231,7 @@ layui.define(['form', 'table'], function (exports) {
               dowDom
                   .addClass("opTable-open-dow")
                   .removeClass("opTable-open-up")
-                  .attr("status", ON);
+                  .attr(KEY_STATUS, ON);
               if (status) {
                 _this.addTR.remove();
               }
@@ -182,13 +239,13 @@ layui.define(['form', 'table'], function (exports) {
 
             if (options.openType === OPEN_DEF) {
               // 关闭类型
-              var sta = dowDom.attr("status"),
+              var sta = dowDom.attr(KEY_STATUS),
                   isThis = (that.attr("data") === dowDom.attr("data"));
               //1、关闭展开的
               dowDom
                   .addClass("opTable-open-up")
                   .removeClass("opTable-open-dow")
-                  .attr("status", OFF);
+                  .attr(KEY_STATUS, OFF);
 
               //2、如果当前 = 展开 && 不等于当前的 关闭
               if (sta === ON && isThis) {
@@ -197,14 +254,14 @@ layui.define(['form', 'table'], function (exports) {
                 });
                 return;
               } else {
-                that.attr("status", OFF);
+                that.attr(KEY_STATUS, OFF);
                 addTD.remove();
               }
             } else if (options.openType === OPEN_NO_CLOSE) {
               //  1、如果当前为打开，再次点击则关闭
               if (status) {
                 that.removeClass("opTable-open-dow");
-                that.attr("status", 'off');
+                that.attr(KEY_STATUS, 'off');
                 this.addTR.find("div").slideUp(100, function () {
                   _this.addTR.remove();
                 });
@@ -368,9 +425,31 @@ layui.define(['form', 'table'], function (exports) {
             }
 
             that.addClass("opTable-open-dow");
-            that.attr("status", 'on');
+            that.attr(KEY_STATUS, 'on');
           });
 
+      // (展开|关闭)全部
+      $("." + getOpenAllClickClass(options.elem))
+          .parent()
+          .parent()
+          .unbind("click")
+          .click(function () {
+            var tag = $(this).find("i"), status = tag.attr(KEY_STATUS);
+            if (status === ON) {
+              tag
+                  .addClass("opTable-open-up")
+                  .removeClass("opTable-open-dow")
+                  .attr(KEY_STATUS, OFF);
+              options.thisIns.closeAll();
+            } else {
+              tag
+                  .addClass("opTable-open-dow")
+                  .removeClass("opTable-open-up")
+                  .attr(KEY_STATUS, ON);
+              options.thisIns.openAll();
+            }
+
+          })
     }
 
     //  4、监听排序事件
@@ -397,7 +476,9 @@ layui.define(['form', 'table'], function (exports) {
   //核心入口
   opTable.render = function (options) {
     var ins = new Class(options);
-    return thisIns.call(ins);
+    var ex = thisIns.call(ins);
+    ins.config.thisIns = ex;
+    return ex;
   };
 
   //加载组件所需样式
