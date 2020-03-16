@@ -16,7 +16,6 @@ layui.define(['form', 'table'], function (exports) {
       // 外部接口
       , opTable = {
         index: layui.opTable ? (layui.opTable.index + 10000) : 0
-
         // 设置全局项
         , set: function (options) {
           var that = this;
@@ -25,9 +24,9 @@ layui.define(['form', 'table'], function (exports) {
         }
 
         // 事件监听
-        , on: function (events, callback) {
-          return layui.onevent.call(this, MOD_NAME, events, callback);
-        }
+        //, on: function (events, callback) {
+        //  return layui.onevent.call(this, MOD_NAME, events, callback);
+        //}
       }
       // 展开列需要需要显示的数据 数据格式为 每个页面唯一的（LAY_IINDEX）下标绑定数据  对应的数据
       , openItemData = {}
