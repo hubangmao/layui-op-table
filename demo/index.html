@@ -35,27 +35,41 @@
 			width: 100%;
 			height: 100px;
 			position: fixed;
+			left: 0;
+			padding-left: 30px;
 			top: 0;
 			z-index: 999;
 			background: #fff;
-			line-height: 120px;
 			border-bottom: #dedede double 1px;
 			margin-bottom: 10px;
 		}
 
+		.div-img-logo img {
+			margin-top: 30px;
+		}
+
 		.div-img-logo span {
+			position: absolute;
+			display: inline-block;
 			margin-left: 20px;
 			padding: 4px;
+			margin-top: 58px;
 		}
 
 		/*简介*/
 		.item-min-about {
 			border-left: #1E9FFF solid 6px;
 			margin-bottom: 20px;
-			background: rgba(30, 159, 255, 0.25);
-			height: 80px;
+			background: #f7f7f7;
+			min-height: 70px;
+			height: auto;
 			border-radius: 8px;
 			padding: 5px 5px 5px 20px;
+		}
+
+		.item-min-about:last-child {
+			border-left: none;
+			border-radius: 0;
 		}
 
 		.item-min-about div {
@@ -114,7 +128,7 @@
 		/*定位导航 弹出层*/
 		#ul-location {
 			height: auto;
-			min-height: 220px;
+			min-height: 260px;
 			margin-top: 10px;
 			display: list-item;
 		}
@@ -210,27 +224,42 @@
 						数据列数过多解决方案。
 					</div>
 					<div>
-						<span class="color-select">初衷</span> 在写之前有在其他框架看到过类似的效果，还不错 " 实用 " 着手在Layui上实现了一套。
+						<span class="color-select">初衷</span> 体验过类似效果的UI很实用，着手在Layui上实现了一套。
 					</div>
 					<div>
 						此项目 <span class="color-select"> 长期维护 </span>
 					</div>
-
 				</div>
 
-				<div class="item-min-value">
-					开源地址： <a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
-									 rel="nofollow">码云下载</a>
+				<div class="item-min-title">联系方式</div>
+				<div class="item-min-about">
+					<div>
+						开源地址： <a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
+										 rel="nofollow">码云下载</a>
+					</div>
+					<div>
+						<a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
+							 rel="nofollow">Fly社区交流</a>
+					</div>
+					<div><a>QQ群：<span class="code">730991854</span></a></div>
+					<div>
+						统一Bug异常反馈 <a href="https://gitee.com/Hbangmao/layui-op-table/issues" class="color-select"
+												 target="_blank"
+												 rel="nofollow"> issues</a>
+					</div>
 				</div>
-				<div class="item-min-value">
-					<a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
-						 rel="nofollow">Fly社区交流</a>
-				</div>
-				<div class="item-min-value"><a>QQ群：<span class="code">730991854</span></a></div>
-				<div class="item-min-value">
-					统一Bug异常反馈 <a href="https://gitee.com/Hbangmao/layui-op-table/issues" class="color-select"
-											 target="_blank"
-											 rel="nofollow"> issues</a>
+			</div>
+
+
+			<div class="div-value-item">
+				<div class="item-min-title">作者</div>
+				<span>hubangmao, 热爱 User interaction( UI ) 的Java程序猿, 如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^</span>
+			</div>
+
+			<div class="div-value-item">
+				<div class="item-min-title">打赏</div>
+				<div style="width:152px;">
+					<img src="static/ic/ic-wx-pay.png"/>
 				</div>
 			</div>
 
@@ -257,19 +286,6 @@
 			</div>
 
 			<div class="div-value-item">
-				<div class="item-min-title">作者</div>
-				<span>hubangmao, 热爱 User interaction( UI ) 的Java程序猿, 如果喜欢作者的组件, 可以请作者喝肥仔水 ^_^</span>
-			</div>
-
-			<div class="div-value-item">
-				<div class="item-min-title">打赏</div>
-				<div style="width:152px;">
-					<img src="static/ic/ic-wx-pay.png"/>
-					<span style="display: inline-block;width: 100%;text-align: center ;margin-top: 4px">觉得不错就支持一下吧</span>
-				</div>
-			</div>
-
-			<div class="div-value-item">
 				<div class="layui-elem-quote"><a name="href-demo">Hello Word</a></div>
 				<span class="span-hint">我们将不重要的列安排在扩展区域显示(让我们界面排版更美观一些)</span>
 				<div class="item-child">
@@ -285,6 +301,32 @@
 
 				</div>
 
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="demo-kpzx">可配属性</a></div>
+				<span class="span-hint">render()函数 支持 layui table 所参数</span>
+				<div class="item-child">
+					<table id='demo-kpzx' lay-filter='demo-kpzx'></table>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote">
+					<a name="demo-qjff">全局方法</a>
+				</div>
+				<div class="item-child">
+					<table id='demo-qjff' lay-filter='demo-qjff'></table>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote">
+					<a name="demo-hdhs">回调方法</a>
+				</div>
+				<div class="item-child">
+					<table id='demo-hdhs' lay-filter='demo-hdhs'></table>
+				</div>
 			</div>
 
 			<div class="div-value-item">
@@ -334,22 +376,6 @@
 				</div>
 			</div>
 
-			<div class="div-value-item">
-				<div class="layui-elem-quote"><a name="demo-kpzx">可配置项</a></div>
-				<span class="span-hint">render()函数 支持 layui table 所参数</span>
-				<div class="item-child">
-					<table id='demo-kpzx' lay-filter='demo-kpzx'></table>
-				</div>
-			</div>
-
-			<div class="div-value-item">
-				<div class="layui-elem-quote">
-					<a name="demo-qjff">全局方法</a>
-				</div>
-				<div class="item-child">
-					<table id='demo-qjff' lay-filter='demo-qjff'></table>
-				</div>
-			</div>
 
 		</div>
 
@@ -360,7 +386,7 @@
 	</div>
 
 </div>
-</div>
+
 
 <script type='text/html' id='toolDemo'>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='openAll'>展开全部</a>
@@ -373,9 +399,13 @@
 </script>
 
 <script type="text/html" id="moreDemo">
+
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='reload'>重载</a>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='getLayuiTable'>查看当前Layui Table 对象</a>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='opOrientation'>(水平|垂直)排列</a>
+
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='openAll'>展开全部</a>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='closeAll'>关闭全部</a>
 
 	<a class='layui-btn   layui-btn-xs' lay-event='openIndex'>展开(指定下标)</a>
 	<a class='layui-btn   layui-btn-xs' lay-event='closeIndex'>关闭(指定下标)</a>
@@ -416,7 +446,7 @@
         , {field: 'score', title: '分数', edit: true}
         , {field: 'classify', title: '职业'}
       ]
-      , edit: function (data) {
+      , onEdit: function (data) {
         console.log(data)
         layer.msg("修改内容已输出到日志窗口");
       }, openType: 1
@@ -543,7 +573,7 @@
           });
         }
       }
-      , sort: function (obj) {
+      , onSort: function (obj) {
         console.log(obj)
       }
       , opOrientation: 'h'
@@ -620,7 +650,7 @@
            *发生选择时回调
            * @param it 下拉选择数据
            * @param item 当前表格数据
-           * @returns {boolean} true ：代表发生了修改 会回调 edit()相反则不会
+           * @returns {boolean} true ：代表发生了修改 会回调 onEdit()相反则不会
            *
            * 这样设计考虑到实际环境可能做不到统一
            */
@@ -633,25 +663,71 @@
       ]
 
       //监听排序
-      , sort: function (obj) {
+      , onSort: function (obj) {
         console.log(obj)
       }
 
       //监听修改
-      , edit: function (obj) {
+      , onEdit: function (obj) {
         layer.msg("已输出到日志窗口");
         console.log(obj)
       }
+      /**
+       * 当初始化成功回调
+       * @param itemData 行数据
+       * @param itemIndex 展开行下标
+       * @param dom 展开的 dom
+       */
+      , onInitSuccess: function (itemData, itemIndex, dom) {
+        console.log("onInitSuccess")
+      },
+      /**
+       * 当展开时回调
+       * @param itemData 行数据
+       * @param itemIndex 展开行下标
+       * @param dom 展开的 dom
+       */
+      onOpen: function (itemData, itemIndex, dom) {
+        console.log("onOpen")
+      },
+      /**
+       * 当关闭时回调
+       * @param itemData 行数据
+       * @param itemIndex 展开行下标
+       */
+      onClose: function (itemData, itemIndex) {
+        console.log("onClose")
+      },
+      // 当展开全部时回调
+      onOpenAll: function () {
+        console.log("onOpenAll")
+      },
+      // 当关闭全部时回调
+      onCloseAll: function () {
+        console.log("onCloseAll")
+      },
+      /**
+       * 当关闭全部时回调
+       * @param obj
+       */
+      onItemClick: function (obj) {
+        console.log("onItemClick", obj)
+      }
 
       // 见文档
-      , openType: 0
-
+      , openType: 1
     });
     var status;
     // 监听工具栏
     layui.table.on('toolbar(test3)', function (obj) {
       // 1、重载
-      if (obj.event === "reload") {
+      if (obj.event === 'openAll') {
+        opTable.openAll();
+        layer.msg("展开全部 isOpenAll: " + opTable.isOpenAll());
+      } else if (obj.event === 'closeAll') {
+        opTable.closeAll();
+        layer.msg("关闭全部 isOpenAll: " + opTable.isOpenAll())
+      } else if (obj.event === "reload") {
         opTable.reload({opOrientation: "h"});
       }
       // 2、获取当前 layui table 指针
@@ -729,11 +805,13 @@
           , success: function (layero, index) {
             var items = [
               {title: "Hello Word", href: 'href-demo'},
+              {title: "可配属性", href: 'demo-kpzx'},
+              {title: "全局方法", href: 'demo-qjff'},
+              {title: "回调方法", href: 'demo-hdhs'},
               {title: "展开显示表格", href: 'href-op-table'},
               {title: "展开从网络加载", href: 'href-op-network'},
-              {title: "相关动态操作", href: 'href-more'},
-              {title: "可配置项", href: 'demo-kpzx'},
-              {title: "全局方法", href: 'demo-qjff'},
+              {title: "相关动态操作", href: 'href-more'}
+
             ];
             items.forEach(function (item) {
               $("#ul-location").append("<li> <a data='" + item.href + "'>" + item.title + "</a></li>");
@@ -773,16 +851,18 @@
 
         this.initTableKpzx();
         this.initTableQjff();
+        this.initTableHdhs();
       }
+      // 可配置属性
       , initTableKpzx: function () {
 
 
-        /*可配置项*/
+        /*可配属性*/
         layui.opTable.render({
           elem: '#demo-kpzx'
           , id: '#demo-kpzx'
           , cols: [[
-            {field: 'parameter', title: '参数', width: 120}
+            {field: 'parameter', title: '参数', width: 140}
             , {field: 'type', title: '类型', width: 120}
             , {field: 'doc', title: '描述'}
             , {
@@ -802,7 +882,7 @@
             {
               parameter: 'opOrientation',
               type: 'String',
-              doc: '展开的item的展示方式： (垂直v|水平h)  默认为垂直排序',
+              doc: '展开的item的展示方式： (垂直v|水平h)  默认为垂直排列',
               demo: "",
               code: ""
             },
@@ -819,22 +899,19 @@
               doc: '详见【展开网络加载】案例',
               demo: "",
               code: $("#layui-code-test2").html()
-            },
-            {
-              parameter: 'edit',
-              type: 'function',
-              doc: '当监听到修改后回调',
+            }, {
+              parameter: 'slideDownTime',
+              type: 'Number',
+              doc: '展开动画执行时长(毫秒) 默认：200',
+              demo: "",
+              code: ""
+            }, {
+              parameter: 'slideUpTime',
+              type: 'Number',
+              doc: '关闭动画执行时长(毫秒) 默认：100',
               demo: "",
               code: ""
             },
-            {
-              parameter: 'sort',
-              type: 'function',
-              doc: '当监听到排序后回调',
-              demo: "",
-              code: ""
-            }
-
           ]
           , openCols: [{
             field: 'code', title: '示例值', templet: function (it) {
@@ -865,13 +942,13 @@
               name: 'openAll()',
               doc: '展开全部',
               parameter: '无',
-              return: ""
+              return: "返回当前实例(一般用于 连续调用)"
             },
             {
               name: 'closeAll()',
               doc: '关闭全部',
               parameter: '无',
-              return: "无"
+              return: "返回当前实例(一般用于 连续调用)"
             },
             {
               name: 'openIndex()',
@@ -896,6 +973,66 @@
               doc: '当前状态是否为全部打开的',
               parameter: 'index',
               return: "( true | false )"
+            }
+          ]
+        });
+      }
+      // 回调方法
+      , initTableHdhs: function () {
+        layui.table.render({
+          elem: '#demo-hdhs'
+          , id: '#demo-hdhs'
+          , cols: [[
+            {field: 'name', title: '方法名称'}
+            , {field: 'doc', title: '说明'}
+            , {field: 'parameter', title: '回传参数'}
+            , {field: 'return', title: '返回值'}
+          ]]
+          , data: [
+            {
+              name: 'onInitSuccess(itemData,itemIndex,dom)',
+              doc: '当展开处的内容创建成功时回调',
+              parameter: '回传必要参数',
+              return: "无"
+            }
+
+            , {
+              name: 'onEdit(obj)',
+              doc: '当发生修改时回调',
+              parameter: '当前被修改的信息',
+              return: "无"
+            }, {
+              name: 'onSort(obj)',
+              type: 'function',
+              doc: '当监听到排序后回调',
+              parameter: "回传必要参数",
+              return: ""
+            },
+            {
+              name: 'onOpen(itemData,index,dom)',
+              doc: '当展开时回调',
+              parameter: '回传必要参数',
+              return: "无"
+            }, {
+              name: 'onClose(itemData,index,dom)',
+              doc: '当关闭时回调',
+              parameter: '回传必要参数',
+              return: "无"
+            }, {
+              name: 'onOpenAll()',
+              doc: '当展开全部时回调',
+              parameter: '无',
+              return: "无"
+            }, {
+              name: 'onCloseAll()',
+              doc: '当关闭全部时回调',
+              parameter: '无',
+              return: "无"
+            }, {
+              name: 'onItemClick(obj)',
+              doc: '当被点击时回调',
+              parameter: '回传必要参数',
+              return: "无"
             }
           ]
         });

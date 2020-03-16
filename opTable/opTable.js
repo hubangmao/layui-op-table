@@ -11,20 +11,20 @@ layui.define(['form', 'table'], function (exports) {
       , VERSION = 1.0, MOD_NAME = 'opTable'
       // 展开 , 关闭
       , ON = 'on', OFF = 'off', KEY_STATUS = "status"
-      //openType 0、默认效果同时只展开一项  1、点击展开多项 2、 展开全部  3、关闭全部
+      // openType 0、默认效果同时只展开一项  1、点击展开多项 2、 展开全部  3、关闭全部
       , OPEN_DEF = 0, OPEN_NO_CLOSE = 1, OPEN_ALL = 2, CLOSE_ALL = 3
-      //外部接口
+      // 外部接口
       , opTable = {
         index: layui.opTable ? (layui.opTable.index + 10000) : 0
 
-        //设置全局项
+        // 设置全局项
         , set: function (options) {
           var that = this;
           that.config = $.extend({}, that.config, options);
           return that;
         }
 
-        //事件监听
+        // 事件监听
         , on: function (events, callback) {
           return layui.onevent.call(this, MOD_NAME, events, callback);
         }
@@ -37,7 +37,7 @@ layui.define(['form', 'table'], function (exports) {
       , getOpenAllClickClass = function (elem) {
         return getOpenClickClass(elem, true) + "-all"
       }
-      //操作当前实例
+      // 操作当前实例
       , thisIns = function () {
         var that = this
             , options = that.config
@@ -56,8 +56,9 @@ layui.define(['form', 'table'], function (exports) {
           , openAll: function () {
             // 表格 同时只支持展开一项
             if (that.config.openTable || this.isOpenAll()) {
-              return;
+              return this;
             }
+
             var def = that.config.openType;
             that.config.openType = OPEN_ALL;
             $("." + getOpenClickClass(that.config.elem, true)).parent().click();
@@ -67,11 +68,14 @@ layui.define(['form', 'table'], function (exports) {
                 .addClass("opTable-open-dow")
                 .removeClass("opTable-open-up")
                 .attr(KEY_STATUS, ON);
+
+            that.config.onOpenAll && that.config.onOpenAll();
+            return this;
           }
           // 关闭全部
           , closeAll: function () {
             if (!this.isOpenAll()) {
-              return;
+              return this;
             }
 
             var def = that.config.openType;
@@ -82,7 +86,10 @@ layui.define(['form', 'table'], function (exports) {
             $("." + getOpenAllClickClass(that.config.elem))
                 .addClass("opTable-open-up")
                 .removeClass("opTable-open-dow")
-                .attr(KEY_STATUS, ON);
+                .attr(KEY_STATUS, OFF);
+
+            that.config.onCloseAll && that.config.onCloseAll();
+            return this;
           }
 
           // 通过下标展开一项
@@ -147,6 +154,10 @@ layui.define(['form', 'table'], function (exports) {
     , opOrientation: 'v'
     // layui table 对象
     , table: null
+    // 展开动画执行时长
+    , slideDownTime: 200
+    // 关闭动画执行时长
+    , slideUpTime: 100
   };
 
   //渲染视图
@@ -185,7 +196,6 @@ layui.define(['form', 'table'], function (exports) {
       }
     });
 
-
     //  2、表格Render
     options.table = table.render(
         $.extend({
@@ -212,7 +222,14 @@ layui.define(['form', 'table'], function (exports) {
                 // 操作倒三角
                 , dowDom = that.parent().parent().parent().parent().find(".opTable-open-dow")
                 // 展开的tr
-                , addTD = that.parent().parent().parent().parent().find(".opTable-open-td");
+                , addTD = that.parent().parent().parent().parent().find(".opTable-open-td"),
+                // 行点击Class
+                itemClickClass = options.elem.replace("#", '').replace(".", '') + '-opTable-open-item-div';
+
+
+            function initOnClose() {
+              options.onClose && options.onClose(bindOpenData, itemIndex)
+            }
 
             // 关闭全部
             if (options.openType === CLOSE_ALL) {
@@ -220,9 +237,11 @@ layui.define(['form', 'table'], function (exports) {
                   .addClass("opTable-open-up")
                   .removeClass("opTable-open-dow")
                   .attr(KEY_STATUS, OFF);
-              addTD.slideUp(100, function () {
+              addTD.slideUp(options.slideUpTime, function () {
                 addTD.remove();
               });
+              //关闭回调
+              initOnClose();
               return;
             }
 
@@ -235,22 +254,21 @@ layui.define(['form', 'table'], function (exports) {
               if (status) {
                 _this.addTR.remove();
               }
-            }
-
-            if (options.openType === OPEN_DEF) {
+            } else if (options.openType === OPEN_DEF) {
               // 关闭类型
               var sta = dowDom.attr(KEY_STATUS),
                   isThis = (that.attr("data") === dowDom.attr("data"));
-              //1、关闭展开的
-              dowDom
-                  .addClass("opTable-open-up")
-                  .removeClass("opTable-open-dow")
-                  .attr(KEY_STATUS, OFF);
 
               //2、如果当前 = 展开 && 不等于当前的 关闭
               if (sta === ON && isThis) {
-                addTD.slideUp(100, function () {
+                //1、关闭展开的
+                dowDom
+                    .addClass("opTable-open-up")
+                    .removeClass("opTable-open-dow")
+                    .attr(KEY_STATUS, OFF);
+                addTD.slideUp(options.slideUpTime, function () {
                   addTD.remove();
+                  initOnClose();
                 });
                 return;
               } else {
@@ -261,12 +279,15 @@ layui.define(['form', 'table'], function (exports) {
               //  1、如果当前为打开，再次点击则关闭
               if (status) {
                 that.removeClass("opTable-open-dow");
-                that.attr(KEY_STATUS, 'off');
-                this.addTR.find("div").slideUp(100, function () {
+                that.attr(KEY_STATUS, OFF);
+                this.addTR.find("div").eq(0).slideUp(options.slideUpTime, function () {
                   _this.addTR.remove();
+                  //关闭回调
+                  initOnClose();
                 });
                 return;
               }
+
             }
 
             // 把添加的 tr 绑定到当前 移除时使用
@@ -292,7 +313,6 @@ layui.define(['form', 'table'], function (exports) {
             } else if (openTable) {
               var id = openTable.elem.replace("#", '').replace(".", '');
               //2、展开显示表格
-
               divContent
                   .empty()
                   .append("<table id='" + id + "' lay-filter='" + id + "'></table>")
@@ -300,7 +320,7 @@ layui.define(['form', 'table'], function (exports) {
                     "padding": "0 10px 0 50px", "margin-left": "0", "width":
                         _this.addTR.width()
                   })
-                  .fadeIn(200);
+                  .fadeIn(400);
 
               // 设置展开表格颜色为浅色背景
               addTD.css("cssText", "background-color:#FCFCFC!important");
@@ -312,14 +332,14 @@ layui.define(['form', 'table'], function (exports) {
                 appendItem(val, bindOpenData);
               });
               divContent.append(html.join(''));
-              this.addTR.find("div").slideDown(200);
+              this.addTR.find("div").slideDown(options.slideDownTime);
               bindBlur(bindOpenData);
             }
 
             function loadNetwork() {
               divContent.empty()
                   .append('<div class="opTable-network-message" ><i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop" data-anim="layui-anim-rotate layui-anim-loop"></i></div>');
-              _this.addTR.find("div").slideDown(200);
+              _this.addTR.find("div").slideDown(options.slideDownTime);
 
 
               openNetwork.onNetwork(bindOpenData
@@ -345,6 +365,7 @@ layui.define(['form', 'table'], function (exports) {
                   })
             }
 
+
             /**
              * 添加默认排版风格 item
              * @param colsItem  cols配置信息
@@ -353,13 +374,12 @@ layui.define(['form', 'table'], function (exports) {
             function appendItem(colsItem, openData) {
               //  1、自定义模板
               if (colsItem.templet) {
-
-                html.push("<div class='opTable-open-item-div' opOrientation='" + options.opOrientation + "'>")
+                html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "'>")
                 html.push(colsItem.templet(openData));
                 html.push("</div>")
                 //  2、可下拉选择类型
               } else if (colsItem.type && colsItem.type === 'select') {
-                var child = ["<div id='" + colsItem.field + "' class='opTable-open-item-div' opOrientation='" + options.opOrientation + "' >"];
+                var child = ["<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "' >"];
                 child.push("<span style='color: #99a9bf'>" + colsItem["title"] + "：</span>");
                 child.push("<div class='layui-input-inline'><select  lay-filter='" + colsItem.field + "'>");
                 colsItem.items.forEach(function (it) {
@@ -376,22 +396,22 @@ layui.define(['form', 'table'], function (exports) {
                   //  监听 select 修改
                   layui.form.on('select(' + colsItem.field + ')', function (data) {
 
-                    if (options.edit && colsItem.isEdit(data, openData)) {
+                    if (options.onEdit && colsItem.isEdit(data, openData)) {
                       var json = {};
                       json.value = data.value;
                       json.field = colsItem.field;
                       openData[colsItem.field] = data.value;
                       json.data = JSON.parse(JSON.stringify(openData));
-                      options.edit(json);
+                      options.onEdit(json);
                     }
                   });
                 }, 20);
               } else {
                 var text = colsItem.onDraw ? colsItem.onDraw(openData) : openData[colsItem["field"]];
                 // 3、默认类型
-                html.push("<div class='opTable-open-item-div' opOrientation='" + options.opOrientation + "'>");
+                html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "'>");
                 html.push("<span class='opTable-item-title'>" + colsItem["title"] + "：</span>");
-                html.push((colsItem.edit ?
+                html.push((colsItem.onEdit ?
                         ("<input  class='opTable-exp-value opTable-exp-value-edit' autocomplete='off' name='" + colsItem["field"] + "' value='" + text + "'/>")
                         : ("<span class='opTable-exp-value' >" + text + "</span>")
                 ));
@@ -410,13 +430,13 @@ layui.define(['form', 'table'], function (exports) {
                   .blur(function () {
                     var that = $(this), name = that.attr("name"), val = that.val();
                     // 设置了回调 &&发生了修改
-                    if (options.edit && bindOpenData[name] + "" !== val) {
+                    if (options.onEdit && bindOpenData[name] + "" !== val) {
                       var json = {};
                       json.value = that.val();
                       json.field = that.attr("name");
                       bindOpenData[name] = val;
                       json.data = bindOpenData;
-                      options.edit(json);
+                      options.onEdit(json);
                     }
                   })
                   .keypress(function (even) {
@@ -424,9 +444,34 @@ layui.define(['form', 'table'], function (exports) {
                   })
             }
 
+
+            if (options.onItemClick) {
+              $("." + itemClickClass)
+                  .unbind("click")
+                  .click(function (e) {
+                    var field = $(this).attr("id");
+                    options.onItemClick({
+                      lineData: bindOpenData,
+                      field: field,
+                      value: bindOpenData[field],
+                      div: $(this),
+                      e: e
+                    });
+                  });
+            }
+
             that.addClass("opTable-open-dow");
-            that.attr(KEY_STATUS, 'on');
+            that.attr(KEY_STATUS, ON);
+
+            // 创建成功回调
+            options.onInitSuccess && options.onInitSuccess(bindOpenData, itemIndex, this.addTR);
+            setTimeout(function () {
+              // 展开回调
+              options.onOpen && options.onOpen(bindOpenData, itemIndex, this.addTR);
+            }, options.slideDownTime);
+
           });
+
 
       // (展开|关闭)全部
       $("." + getOpenAllClickClass(options.elem))
@@ -436,8 +481,7 @@ layui.define(['form', 'table'], function (exports) {
           .click(function () {
             var tag = $(this).find("i"), status = tag.attr(KEY_STATUS);
             if (status === ON) {
-              tag
-                  .addClass("opTable-open-up")
+              tag.addClass("opTable-open-up")
                   .removeClass("opTable-open-dow")
                   .attr(KEY_STATUS, OFF);
               options.thisIns.closeAll();
@@ -457,8 +501,8 @@ layui.define(['form', 'table'], function (exports) {
 
     //  5、监听表格排序
     table.on('sort(' + elem + ')', function (obj) {
-      if (options.sort) {
-        options.sort(obj)
+      if (options.onSort) {
+        options.onSort(obj)
       }
       // 重新绑定事件
       initExpandedListener();
@@ -466,8 +510,8 @@ layui.define(['form', 'table'], function (exports) {
 
     //  6、单元格编辑
     layui.table.on('edit(' + elem + ')', function (obj) {
-      if (options.edit) {
-        options.edit(obj)
+      if (options.onEdit) {
+        options.onEdit(obj)
       }
     });
 
