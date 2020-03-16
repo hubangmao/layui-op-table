@@ -69,6 +69,13 @@ Layui Table 数据列数过多解决方案。
 #### 效果预览
 ![效果预览1](https://images.gitee.com/uploads/images/2020/0315/014102_eab37903_734930.png "demo_看图王.png")
 
+#### 可配置属性  
+![可配置属性](https://images.gitee.com/uploads/images/2020/0316/130215_a7c537de_734930.png "属性.png")
+#### 全局方法
+![全局方法](https://images.gitee.com/uploads/images/2020/0316/130239_0067a947_734930.png "全局方法.png") 
+#### 回调方法
+![回调方法](https://images.gitee.com/uploads/images/2020/0316/130301_0042a2e9_734930.png "回调方法.png")
+
 ###  示例
 [示例站点](https://hbangmao.gitee.io/OPTable/index.html)
 
@@ -177,9 +184,9 @@ layui.opTable.render({
 
 hubangmao 90后, 热爱 User interaction( UI ) 的Java程序猿 。
 
-做了一件非常开心非常Nice的事情。
+做完了一件非常开心非常Nice的事情。
 
-此项目会长期维护，以码云更新为准，祝你使用愉快 。  
+此项目长期维护，以码云更新为准，祝你使用愉快 。  
 
 ```
 
