@@ -847,14 +847,12 @@
               tags.unbind("click").click(function () {
                 tags.each(function (i) {
                   tags.eq(i).children("a").css("color", "#333");
-                })
+                });
                 $(this).children("a").css("color", "#1E9FFF");
 
                 $(".layui-elem-quote a").css("color", "#777")
                 var soDom = 'a[name="' + $(this).children('a').attr('data') + '"]';
-                console.log($(soDom).offset().top)
                 $('html,body').animate({scrollTop: $(soDom).offset().top - 130}, 500, null, function () {
-                  console.log("执行结束")
                   $(soDom).css('color', '#1E9FFF').fadeOut(80).fadeIn(40);
                 });
               });
@@ -877,13 +875,41 @@
           $(this).parent().parent().find(".code-open").click();
         });
 
+
         this.initTableKpzx();
         this.initTableQjff();
         this.initTableHdhs();
+        root.initScroll();
+      },
+      // 初始化滚动
+      initScroll: function () {
+
+        function getValue(name, def) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+          var r = decodeURI(window.location.search).substr(1).match(reg);
+          if (r != null) {
+            return unescape(r[2]);
+          }
+          return def;
+        };
+
+        var value = getValue("href");
+        if (value) {
+          var soDom = 'a[name="' + value + '"]';
+          $('html,body').animate({scrollTop: $(soDom).offset().top - 130}, 500, null, function () {
+            console.log("执行结束", $(soDom).text())
+            $(soDom).css('color', '#1E9FFF').fadeOut(80).fadeIn(40);
+          });
+        }
+
+        var openIndex = getValue("openIndex");
+        if (openIndex) {
+          this.initTableKpzx(openIndex);
+        }
+
       }
       // 可配置属性
-      , initTableKpzx: function () {
-
+      , initTableKpzx: function (openIndex) {
 
         /*可配属性*/
         layui.opTable.render({
@@ -946,7 +972,7 @@
               return "<h5>示例代码</h5><pre class='layui-code'>" + it.code + "</pre>";
             }
           }]
-        });
+        }).openIndex(openIndex);
       }
       // 全局方法
       , initTableQjff: function () {
