@@ -451,9 +451,8 @@
         , {field: 'classify', title: '职业'}
       ]
       , onEdit: function (data) {
-        console.log(data)
         layer.msg("修改内容已输出到日志窗口");
-      }, openType: 1
+      }, openType: 0
     });
 
     layui.table.on('toolbar(test)', function (obj) {
@@ -897,7 +896,6 @@
         if (value) {
           var soDom = 'a[name="' + value + '"]';
           $('html,body').animate({scrollTop: $(soDom).offset().top - 130}, 500, null, function () {
-            console.log("执行结束", $(soDom).text())
             $(soDom).css('color', '#1E9FFF').fadeOut(80).fadeIn(40);
           });
         }
@@ -1119,31 +1117,6 @@
     });
 
   })
-</script>
-
-<script class="openCols-demo" type="text/html">
-	layui.opTable.render({
-	elem: '#test'
-	, id: '#test'
-	//  展开的列配置
-	, openCols: [
-	{
-	field: 'sex', title: '性别', templet: function (it) {
-	return "<span>返回自定义排版</span>"
-	}
-	}
-	, {
-	field: 'sign', title: '签名', onDraw: function (it) {
-	return it.sign + " 参数"
-	}
-	}
-	, {field: 'wealth', title: '财富'}
-	, {field: 'experience', title: '经验值'}
-	, {field: 'experience', title: '积分'}
-	, {field: 'score', title: '分数', edit: true}
-	, {field: 'classify', title: '职业'}
-	]
-	});
 </script>
 </body>
 </html>

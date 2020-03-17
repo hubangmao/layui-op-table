@@ -226,6 +226,7 @@ layui.define(['form', 'table'], function (exports) {
                 // 行点击Class
                 itemClickClass = options.elem.replace("#", '').replace(".", '') + '-opTable-open-item-div';
 
+            console.log("展开时查看", options)
 
             function initOnClose() {
               options.onClose && options.onClose(bindOpenData, itemIndex)
@@ -259,14 +260,14 @@ layui.define(['form', 'table'], function (exports) {
               // 关闭类型
               var sta = dowDom.attr(KEY_STATUS),
                   isThis = (that.attr("data") === dowDom.attr("data"));
+              //1、关闭展开的
+              dowDom
+                  .addClass("opTable-open-up")
+                  .removeClass("opTable-open-dow")
+                  .attr(KEY_STATUS, OFF);
 
               //2、如果当前 = 展开 && 不等于当前的 关闭
               if (sta === ON && isThis) {
-                //1、关闭展开的
-                dowDom
-                    .addClass("opTable-open-up")
-                    .removeClass("opTable-open-dow")
-                    .attr(KEY_STATUS, OFF);
                 addTD.slideUp(options.slideUpTime, function () {
                   addTD.remove();
                   initOnClose();
@@ -312,13 +313,13 @@ layui.define(['form', 'table'], function (exports) {
             if (openNetwork) {
               loadNetwork();
             } else if (openTable) {
-
+              console.log(openTable)
               if (typeof openTable !== "function") {
                 throw  "OPTable: openTable attribute is function ";
               }
 
-              openTable = openTable(bindOpenData);
-              var id = openTable.elem.replace("#", '').replace(".", '');
+              var tableOptions = openTable(bindOpenData);
+              var id = tableOptions.elem.replace("#", '').replace(".", '');
               //2、展开显示表格
               divContent
                   .empty()
@@ -332,7 +333,7 @@ layui.define(['form', 'table'], function (exports) {
               // 设置展开表格颜色为浅色背景
               addTD.css("cssText", "background-color:#FCFCFC!important");
 
-              options.childTable = layui.table.render(openTable);
+              options.childTable = layui.table.render(tableOptions);
             } else {
               //  3、从左到右依次排列 Item 默认风格
               openCols.forEach(function (val, index) {
