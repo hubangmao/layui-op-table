@@ -393,6 +393,10 @@
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='closeAll'>关闭全部</a>
 </script>
 
+<script type="text/html" id="toolTableDemo">
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='getChildTable'>查看当前 Child Table 对象</a>
+</script>
+
 <script type='text/html' id='barDemo'>
 	<a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a>
 	<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
@@ -477,9 +481,10 @@
   }).extend({
     opTable: '/opTable'
   }).use(['opTable'], function () {
-    layui.opTable.render({
+    var opTable = layui.opTable.render({
       elem: '#test1'
       , id: '#test1'
+      , toolbar: "#toolTableDemo"
       , url: 'static/test.json'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
@@ -487,23 +492,32 @@
         , {field: 'city', title: '城市', edit: true}
       ]],
 
-      //  展开显示表格 参数支持layui所有参数
-      openTable: {
-        elem: '#child'
-        , id: 'child'
-        , url: 'static/test.json'
-        , page: true
-        , cols: [[
-          {field: 'id', title: 'ID'}
-          , {field: 'username', title: '用户名'}
-          , {field: 'logins', title: '登录名'}
-          , {field: 'city', title: '城市'}
-          , {field: 'classify', title: '职业'}
-          , {field: 'wealth', title: '财产值'}
-          , {field: 'experience', title: '人气值'}
-          , {field: 'score', title: '分数'}
-          , {title: '操作', toolbar: '#barDemo', width: 150}
-        ]]
+      /**
+       * 展开显示表格 参数支持layui所有参数
+       * @param itemData 当前行数据
+       * @returns 支持 layui table 的所有配置参数
+       *
+       * 说明子表的 lay-filter='filter' 值与ID参数相同(去掉 # .)
+       */
+      openTable: function (itemData) {
+        return {
+          elem: '#child'
+          , id: 'child'
+          , url: 'static/test.json'
+          , page: true
+          , where: {id: itemData.id}
+          , cols: [[
+            {field: 'id', title: 'ID'}
+            , {field: 'username', title: '用户名'}
+            , {field: 'logins', title: '登录名'}
+            , {field: 'city', title: '城市'}
+            , {field: 'classify', title: '职业'}
+            , {field: 'wealth', title: '财产值'}
+            , {field: 'experience', title: '人气值'}
+            , {field: 'score', title: '分数'}
+            , {title: '操作', toolbar: '#barDemo', width: 150}
+          ]]
+        }
       }
 
     });
@@ -511,6 +525,15 @@
     setTimeout(function () {
       layui.$('.layui-code-test1').text(layui.$('#layui-code-test1').html())
     }, 20)
+
+
+    // 监听工具栏
+    layui.table.on('toolbar(test1)', function (obj) {
+      if (obj.event === "getChildTable") {
+        layer.msg("已输出到日志窗口");
+        console.log(opTable.config.childTable)
+      }
+    });
 
   });
 </script>
@@ -735,7 +758,12 @@
         layer.msg("已输出到日志窗口");
         console.log(opTable.config.table)
       }
-      // 3、水平或垂直排列内容
+      // 3、获取 ChildTable 对象
+      else if (obj.event === "getChildTable") {
+        layer.msg("已输出到日志窗口");
+        console.log(opTable.config.childTable)
+      }
+      // 4、水平或垂直排列内容
       else if (obj.event === "opOrientation") {
         opTable.reload({opOrientation: opTable.config.opOrientation === "v" ? "h" : "v"});
         setTimeout(function () {
@@ -743,17 +771,17 @@
           layer.msg(opTable.config.opOrientation);
         }, 40)
       }
-      // 4、展开指定下标
+      // 5、展开指定下标
       else if (obj.event === "openIndex") {
         status = opTable.openIndex(0);
         layer.msg(status);
       }
-      // 5、关闭指定下标
+      // 6、关闭指定下标
       else if (obj.event === "closeIndex") {
         status = opTable.closeIndex(0);
         layer.msg(status);
       }
-      // 6、指定下标 关闭则展开 反之亦然
+      // 7指定下标 关闭则展开 反之亦然
       else if (obj.event === "toggleOpenIndex") {
         status = opTable.toggleOpenIndex(0);
         layer.msg(status);
@@ -865,57 +893,57 @@
             {field: 'parameter', title: '参数', width: 140}
             , {field: 'type', title: '类型', width: 120}
             , {field: 'doc', title: '描述'}
-            , {
-              field: 'demo', title: '栗子', templet: function (it) {
-                return it.demo || " 无 ";
-              }
-            }
           ]]
           , data: [
             {
               parameter: 'openCols',
               type: 'Array',
               doc: '展开列配置，类似 layui.table 【cols】',
-              demo: "",
-              code: $(".openCols-demo").html()
+              code: $("#layui-code-test").html()
+            },
+            {
+              parameter: 'openTable',
+              type: 'Function',
+              doc: '详见【展开显示表格】案例',
+              code: $("#layui-code-test1").html()
+            },
+            {
+              parameter: 'openNetwork',
+              type: 'Object',
+              doc: '详见【展开网络加载】案例',
+              code: $("#layui-code-test2").html()
             },
             {
               parameter: 'opOrientation',
               type: 'String',
               doc: '展开的item的展示方式： (垂直v|水平h)  默认为垂直排列',
-              demo: "",
               code: ""
             },
             {
               parameter: 'openType',
               type: 'Number',
               doc: 'openType 0、默认效果同时只展开一项  1、点击展开时不关闭之前展开的类容',
-              demo: "",
               code: ""
             },
             {
-              parameter: 'openNetwork',
-              type: 'Object',
-              doc: '详见【展开网络加载】案例',
-              demo: "",
-              code: $("#layui-code-test2").html()
-            }, {
               parameter: 'slideDownTime',
               type: 'Number',
               doc: '展开动画执行时长(毫秒) 默认：200',
-              demo: "",
               code: ""
-            }, {
+            },
+            {
               parameter: 'slideUpTime',
               type: 'Number',
               doc: '关闭动画执行时长(毫秒) 默认：100',
-              demo: "",
               code: ""
-            },
+            }
           ]
           , openCols: [{
             field: 'code', title: '示例值', templet: function (it) {
-              return it.code ? "<pre class='layui-code'>" + it.code + "</pre>" : "没有示例代码";
+              if (!it.code) {
+                return "暂无示例代码"
+              }
+              return "<h5>示例代码</h5><pre class='layui-code'>" + it.code + "</pre>";
             }
           }]
         });

@@ -153,6 +153,7 @@ layui.define(['form', 'table'], function (exports) {
     , opOrientation: 'v'
     // layui table 对象
     , table: null
+    , childTable: null
     // 展开动画执行时长
     , slideDownTime: 200
     // 关闭动画执行时长
@@ -228,6 +229,7 @@ layui.define(['form', 'table'], function (exports) {
 
             function initOnClose() {
               options.onClose && options.onClose(bindOpenData, itemIndex)
+              options.childTable = null;
             }
 
             // 关闭全部
@@ -310,6 +312,12 @@ layui.define(['form', 'table'], function (exports) {
             if (openNetwork) {
               loadNetwork();
             } else if (openTable) {
+
+              if (typeof openTable !== "function") {
+                throw  "OPTable: openTable attribute is function ";
+              }
+
+              openTable = openTable(bindOpenData);
               var id = openTable.elem.replace("#", '').replace(".", '');
               //2、展开显示表格
               divContent
@@ -324,7 +332,7 @@ layui.define(['form', 'table'], function (exports) {
               // 设置展开表格颜色为浅色背景
               addTD.css("cssText", "background-color:#FCFCFC!important");
 
-              layui.table.render(openTable);
+              options.childTable = layui.table.render(openTable);
             } else {
               //  3、从左到右依次排列 Item 默认风格
               openCols.forEach(function (val, index) {
