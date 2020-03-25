@@ -1,18 +1,21 @@
 /**
- @ Name：表格冗余列可展开显示
+ @ Name：layui 表格冗余列可展开显示
  @ Author：hbm
  @ License：MIT
+ @ version 1.2
  */
 
 layui.define(['form', 'table'], function (exports) {
   var $ = layui.$
       , table = layui.table
       , form = layui.form
-      , VERSION = 1.0, MOD_NAME = 'opTable'
+      , VERSION = 1.2, MOD_NAME = 'opTable'
       // 展开 , 关闭
       , ON = 'on', OFF = 'off', KEY_STATUS = "status"
       // openType 0、默认效果同时只展开一项  1、点击展开多项 2、 展开全部  3、关闭全部
       , OPEN_DEF = 0, OPEN_NO_CLOSE = 1, OPEN_ALL = 2, CLOSE_ALL = 3
+      // 表头展开所有图标配置key，全部item 图标配置key
+      , ICON_DEF_ALL_KEY = "-1", ICON_DEF_ALL_ITEM_KEY = "0"
       // 外部接口
       , opTable = {
         index: layui.opTable ? (layui.opTable.index + 10000) : 0
@@ -36,16 +39,19 @@ layui.define(['form', 'table'], function (exports) {
       , getOpenAllClickClass = function (elem) {
         return getOpenClickClass(elem, true) + "-all"
       }
+      // 获取展开全部图标
+      , getOpenAllIcon = function (isOpenTable, elem, icon) {
+        return isOpenTable ? '' : '<i class="opTable-i-table-open ' + getOpenAllClickClass(elem) + ' " ' + KEY_STATUS + '="off"  title="(展开|关闭)全部" ' + icon + '></i>'
+      }
       // 操作当前实例
       , thisIns = function () {
         var that = this
             , options = that.config
             , id = options.id || options.index;
-
         return {
           reload: function (options) {
             that.config = $.extend(that.config, options);
-            that.config.cols[0].splice(0, 1);
+            that.config.isAloneColumn && that.config.cols[0].splice(0, 1);
             that.render();
             return this;
           }
@@ -129,14 +135,23 @@ layui.define(['form', 'table'], function (exports) {
           // 当前是否全部展开
           , isOpenAll: function () {
             var localTag = $("." + getOpenClickClass(that.config.elem, true));
-            var allTag = localTag.length;
-            var openTag = localTag.parent().parent().parent().parent().find(".opTable-open-dow").length;
-            // 当所有的选项都被展开 则 true
-            return allTag === openTag;
+            var isOpenAll = [];
+            localTag.each(function (i) {
+              if (localTag.eq(i).hasClass("opTable-open-dow")) {
+                isOpenAll.push(true)
+              }
+            });
+            // 所有项===已展开项则为全部展开
+            return localTag.length === isOpenAll.length;
+          }
+
+          // 获取展开所有 图标
+          , getOpenAllIcon: function () {
+
+
           }
         }
       }
-
       //构造器
       , Class = function (options) {
         var that = this;
@@ -151,8 +166,15 @@ layui.define(['form', 'table'], function (exports) {
     openType: OPEN_DEF
     // 展开的item (垂直v|水平h) 排序
     , opOrientation: 'v'
-    // layui table 对象
+    // 在那一列显示展开操作 v1.2
+    , openColumnIndex: 0
+    // 是否单独占一列 v1.2
+    , isAloneColumn: true
+    // 展开图标 {"-1":'展开全部',0:'所有item下标',1:'' ,... 配置指定下标}
+    , openIcon: {}
+    // layui table引用
     , table: null
+    // 子table引用
     , childTable: null
     // 展开动画执行时长
     , slideDownTime: 200
@@ -170,31 +192,81 @@ layui.define(['form', 'table'], function (exports) {
         , openTable = options.openTable || null
         , done = options.done;
 
-
     // 展开显示表格 同时只支持展开一个
     options.openType = openTable ? OPEN_DEF : options.openType;
-
+    // 下标越界问题
+    options.openColumnIndex = options.openColumnIndex > colArr.length ? colArr.length : options.openColumnIndex;
     delete options["done"];
-    //  1、在第一列 插入可展开操作
-    colArr.splice(0, 0, {
-      align: 'left',
-      width: 50,
-      title: openTable ? ''
-          : '<i class="opTable-i-table-open ' + getOpenAllClickClass(options.elem) + ' " ' + KEY_STATUS + '="off"  title="(展开|关闭)全部"></i>',
-      templet: function (item) {
+
+    // 图标
+    var allIcon = function () {
+      // 全部图标
+      var icon = options.openIcon[ICON_DEF_ALL_KEY];
+      if (icon) {
+        return "style='background: url(" + icon + ") 0 0 no-repeat'";
+      }
+      return "";
+    }, allItemIcon = function () {
+      // 全部item图标
+      var icon = options.openIcon[ICON_DEF_ALL_ITEM_KEY];
+      if (icon) {
+        return "style='background: url(" + icon + ") 0 0 no-repeat'";
+      }
+      return "";
+    }, indexByIcon = function (index) {
+      // 指定下标图标
+      var iconPath = options.openIcon[index + ""];
+      if (iconPath) {
+        return "style='background: url(" + iconPath + ") 0 0 no-repeat'"
+      }
+      return allItemIcon;
+    };
+
+
+    //1、 单独占一列
+    if (options.isAloneColumn) {
+      //  1、在指定列 插入可展开操作
+      colArr.splice(options.openColumnIndex, 0, {
+        align: 'left',
+        width: 50,
+        title: getOpenAllIcon(openTable, options.elem, allIcon()),
+        templet: function (item) {
+          // 解决页面多个表格问题
+          var cla = getOpenClickClass(options.elem, false);
+          openItemData[cla] = openItemData[cla] || {};
+          openItemData[cla][item.LAY_INDEX] = item;
+          return "<i class='opTable-i-table-open " + cla + "opTable-i-table-open' " + KEY_STATUS + "='off'  data='"
+              //  把当前列的数据绑定到控件
+              + item.LAY_INDEX
+              + " ' elem='"
+              + cla
+              + "' title='展开' " + indexByIcon(item.LAY_INDEX) + "></i>";
+        }
+      });
+    } else {
+      //2、与数据占一列
+      var openColumn = colArr[options.openColumnIndex];
+      delete openColumn["edit"];
+
+      // 展开显示表格||存在排序 都不支持展开全部
+      openColumn.title = getOpenAllIcon(openTable || openColumn["sort"], options.elem, allIcon()) + ("<span class='opTable-span-seize'></span>") + openColumn.title;
+      var defTem = openColumn.templet;
+      openColumn.templet = function (item) {
         // 解决页面多个表格问题
         var cla = getOpenClickClass(options.elem, false);
-
         openItemData[cla] = openItemData[cla] || {};
         openItemData[cla][item.LAY_INDEX] = item;
-        return "<i class='opTable-i-table-open " + cla + "opTable-i-table-open' " + KEY_STATUS + "='off'  data='"
+        return ("<i class='opTable-i-table-open " + cla + "opTable-i-table-open' " + KEY_STATUS + "='off'  data='"
             //  把当前列的数据绑定到控件
             + item.LAY_INDEX
             + " ' elem='"
             + cla
-            + "' title='展开'></i>";
-      }
-    });
+            + "' title='展开' "
+            + indexByIcon(item.LAY_INDEX) + "></i>")
+            + ("<span class='opTable-span-seize'></span>")
+            + (defTem ? defTem(item) : item[openColumn.field]);
+      };
+    }
 
     //  2、表格Render
     options.table = table.render(
@@ -225,8 +297,6 @@ layui.define(['form', 'table'], function (exports) {
                 , addTD = that.parent().parent().parent().parent().find(".opTable-open-td"),
                 // 行点击Class
                 itemClickClass = options.elem.replace("#", '').replace(".", '') + '-opTable-open-item-div';
-
-            console.log("展开时查看", options)
 
             function initOnClose() {
               options.onClose && options.onClose(bindOpenData, itemIndex)
@@ -313,7 +383,6 @@ layui.define(['form', 'table'], function (exports) {
             if (openNetwork) {
               loadNetwork();
             } else if (openTable) {
-              console.log(openTable)
               if (typeof openTable !== "function") {
                 throw  "OPTable: openTable attribute is function ";
               }
@@ -487,7 +556,7 @@ layui.define(['form', 'table'], function (exports) {
           .parent()
           .unbind("click")
           .click(function () {
-            var tag = $(this).find("i"), status = tag.attr(KEY_STATUS);
+            var tag = $(this).find("i").eq(0), status = tag.attr(KEY_STATUS);
             if (status === ON) {
               tag.addClass("opTable-open-up")
                   .removeClass("opTable-open-dow")
@@ -509,18 +578,14 @@ layui.define(['form', 'table'], function (exports) {
 
     //  5、监听表格排序
     table.on('sort(' + elem + ')', function (obj) {
-      if (options.onSort) {
-        options.onSort(obj)
-      }
+      options.onSort && options.onSort(obj)
       // 重新绑定事件
       initExpandedListener();
     });
 
     //  6、单元格编辑
     layui.table.on('edit(' + elem + ')', function (obj) {
-      if (options.onEdit) {
-        options.onEdit(obj)
-      }
+      options.onEdit && options.onEdit(obj)
     });
 
   };
@@ -535,9 +600,7 @@ layui.define(['form', 'table'], function (exports) {
 
   //加载组件所需样式
   layui.link(layui.cache.base + '/opTable.css?v=1' + VERSION, function () {
-    //此处的“opTable”要对应 opTable.css 中的样式： html #layuicss-opTable{}
   }, 'opTable');
 
   exports('opTable', opTable);
-
 });

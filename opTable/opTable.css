@@ -18,24 +18,26 @@ html #layuicss-opTable {
 
 /* 组件样式 */
 .opTable-i-table-open {
-    display: block;
     width: 10px;
     height: 10px;
     user-select: none;
-    background: url(icon/right.svg) 0 0 no-repeat;
-    background-size: 10px 10px;
+    background: url(icon/optable.right.svg) 0 0 no-repeat;
+    background-size: 10px 10px !important;
+    position: relative;
+    display: inline-block;
+    transition: transform .2s ease-in-out;
+
 }
 
+/*图标与内容占位块*/
+.opTable-span-seize {
+    display: inline-block;
+    width: 11px;
+}
 
 /*表格展开三角动画*/
 .opTable-open-dow {
     transform: rotate(90deg)
-}
-
-.opTable-i-table-open {
-    position: relative;
-    display: inline-block;
-    transition: transform .2s ease-in-out;
 }
 
 .opTable-open-td {

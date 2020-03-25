@@ -32,11 +32,12 @@
 		}
 
 		.div-img-logo {
-			width: 100%;
 			height: 100px;
 			position: fixed;
 			left: 0;
+			right: 0;
 			padding-left: 30px;
+			padding-right: 30px;
 			top: 0;
 			z-index: 999;
 			background: #fff;
@@ -44,16 +45,31 @@
 			margin-bottom: 10px;
 		}
 
-		.div-img-logo img {
+		.div-img-logo > img {
 			margin-top: 30px;
 		}
 
-		.div-img-logo span {
+		.div-img-logo > span {
 			position: absolute;
 			display: inline-block;
 			margin-left: 20px;
 			padding: 4px;
 			margin-top: 58px;
+		}
+
+		/*码云 数据*/
+		.gitee-info a {
+			margin-right: 10px;
+
+		}
+
+		.gitee-info a:last-child {
+			color: #1E9FFF;
+		}
+
+		.gitee-info a:last-child:hover {
+			color: #333;
+
 		}
 
 		/*简介*/
@@ -63,7 +79,6 @@
 			background: #f7f7f7;
 			min-height: 70px;
 			height: auto;
-			border-radius: 8px;
 			padding: 5px 5px 5px 20px;
 		}
 
@@ -128,7 +143,7 @@
 		/*定位导航 弹出层*/
 		#ul-location {
 			height: auto;
-			min-height: 260px;
+			min-height: 300px;
 			margin-top: 10px;
 			display: list-item;
 		}
@@ -238,7 +253,7 @@
 										 rel="nofollow">码云下载</a>
 					</div>
 					<div>
-						<a href="https://gitee.com/Hbangmao/layui-op-table" class="color-select" target="_blank"
+						<a href="https://fly.layui.com/jie/63521/#item-1584498318282" class="color-select" target="_blank"
 							 rel="nofollow">Fly社区交流</a>
 					</div>
 					<div><a>QQ群：<span class="code">730991854</span></a></div>
@@ -260,6 +275,19 @@
 				<div class="item-min-title">打赏</div>
 				<div style="width:152px;">
 					<img src="static/ic/ic-wx-pay.png"/>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="item-min-title"><a name="download">下载</a></div>
+				<div class="gitee-info">
+					<a href="https://gitee.com/hbangmao/layui-op-table/stargazers">
+						<img src="https://gitee.com/hbangmao/layui-op-table/badge/star.svg?theme=dark" alt="star">
+					</a>
+					<a href="https://gitee.com/hbangmao/layui-op-table/members"><img
+							src="https://gitee.com/hbangmao/layui-op-table/badge/fork.svg?theme=dark" alt="fork">
+					</a>
+					<a href="https://gitee.com/Hbangmao/layui-op-table" target="_blank">码云下载</a>
 				</div>
 			</div>
 
@@ -361,6 +389,21 @@
 			</div>
 
 			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="href-icon-setting">图标配置</a></div>
+				<span class="span-hint">配置图标案例</span>
+				<div class="item-child">
+					<table id='icon-setting' lay-filter='icon-setting'></table>
+					<div class="item-open-code">
+						<div class="code-open">展开代码</div>
+						<div class="code-group">
+							<pre class='layui-code layui-code-icon-setting'></pre>
+							<span>收起代码</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="div-value-item">
 				<div class="layui-elem-quote">
 					<a name="href-more">相关动态操作</a></div>
 				<span class="span-hint">展示一些动态操作的栗子</span>
@@ -416,7 +459,6 @@
 	<a class='layui-btn   layui-btn-xs' lay-event='toggleOpenIndex'>toggle(指定下标)</a>
 
 </script>
-
 <script src='../layui/layui.js'></script>
 
 <!--1、普通 案例-->
@@ -808,6 +850,61 @@
   });
 </script>
 
+<!--5、图标配置-->
+<script id='layui-code-icon-setting'>
+  layui.config({
+    //  配置 layui 第三方扩展组件存放的基础目录
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['opTable'], function () {
+    var opTable = layui.opTable.render({
+      elem: '#icon-setting'
+      , id: 'icon-setting'
+      , url: 'static/test.json'
+      // 第一列显示展开
+      , openColumnIndex: 0
+      // 不单独占一列
+      , isAloneColumn: false
+      , openIcon: {
+        '-1': 'static/ic-open/ic-1.png',
+        '2': 'static/ic-open/ic-3.svg',
+        '3': 'static/ic-open/ic-1.png',
+        '1': 'static/ic-open/ic-1.png',
+        '6': 'static/ic-open/ic-4.png',
+        '7': 'static/ic-open/ic-4.png',
+        '8': 'static/ic-open/ic-4.png'
+      }
+      , cols: [[
+        {field: 'id', title: 'ID', width: 100}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'logins', title: '登录名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+        , {title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
+      ]]
+
+      //  展开的列配置
+      , openCols: [
+        {field: 'sex', title: '性别'}
+        , {field: 'sign', title: '签名'}
+        , {field: 'wealth', title: '财富'}
+        , {field: 'experience', title: '经验值'}
+        , {field: 'experience', title: '积分'}
+        , {field: 'score', title: '分数', edit: true}
+        , {field: 'classify', title: '职业'}
+      ]
+      , onEdit: function (data) {
+        layer.msg("修改内容已输出到日志窗口");
+      }, openType: 0
+    });
+
+    //  可忽略
+    setTimeout(function () {
+      layui.$('.layui-code-icon-setting').text(layui.$('#layui-code-icon-setting').html())
+    }, 20)
+  });
+</script>
+
 <!--页面代码-->
 <script>
   layui.config({
@@ -832,11 +929,13 @@
           , success: function (layero, index) {
             var items = [
               {title: "Hello Word", href: 'href-demo'},
+              {title: "下载", href: 'download'},
               {title: "可配属性", href: 'demo-kpzx'},
               {title: "全局方法", href: 'demo-qjff'},
               {title: "回调方法", href: 'demo-hdhs'},
               {title: "展开显示表格", href: 'href-op-table'},
               {title: "展开从网络加载", href: 'href-op-network'},
+              {title: "图标配置", href: 'href-icon-setting'},
               {title: "相关动态操作", href: 'href-more'}
 
             ];
@@ -860,6 +959,7 @@
             });
           }
         });
+
         //	展开代码
         $(".item-open-code .code-open").click(function () {
           var that = $(this);
@@ -870,7 +970,7 @@
         });
 
         $(".code-group span").click(function (e) {
-          layui.stope(e)
+          layui.stope(e);
           $(this).parent().parent().find(".code-open").click();
         });
 
@@ -878,9 +978,10 @@
         this.initTableKpzx();
         this.initTableQjff();
         this.initTableHdhs();
+
         root.initScroll();
       },
-      // 初始化滚动
+      // 初始化 地址栏参数滚动
       initScroll: function () {
 
         function getValue(name, def) {
@@ -890,9 +991,11 @@
             return unescape(r[2]);
           }
           return def;
-        };
+        }
+
 
         var value = getValue("href");
+        // 滚动到指定位置
         if (value) {
           var soDom = 'a[name="' + value + '"]';
           $('html,body').animate({scrollTop: $(soDom).offset().top - 130}, 500, null, function () {
@@ -900,6 +1003,7 @@
           });
         }
 
+        // 展开示例代码位置
         var openIndex = getValue("openIndex");
         if (openIndex) {
           this.initTableKpzx(openIndex);
@@ -914,9 +1018,10 @@
           elem: '#demo-kpzx'
           , id: '#demo-kpzx'
           , cols: [[
-            {field: 'parameter', title: '参数', width: 140}
+            {field: 'parameter', title: '参数', width: 180}
             , {field: 'type', title: '类型', width: 120}
             , {field: 'doc', title: '描述'}
+            , {field: 'version', title: '版本', width: 160}
           ]]
           , data: [
             {
@@ -924,6 +1029,27 @@
               type: 'Array',
               doc: '展开列配置，类似 layui.table 【cols】',
               code: $("#layui-code-test").html()
+            },
+            {
+              parameter: 'openColumnIndex',
+              type: 'Number',
+              doc: '在指定列中显示创建展开操作',
+              code: "",
+              version: "v1.2"
+            },
+            {
+              parameter: 'isAloneColumn',
+              type: 'boolean',
+              doc: '是否单独占一列(默认 true)',
+              code: "",
+              version: "v1.2"
+            },
+            {
+              parameter: 'openIcon',
+              type: 'Object',
+              doc: '展开图标设置 (图片支持： svg base64 png) ',
+              code: "openIcon:{-1':'展开全部图片资源路径'0:'所有item图片路径','1':'image/icon-1.png','2':image/icon-1.png'}",
+              version: "v1.2"
             },
             {
               parameter: 'openTable',
@@ -1023,7 +1149,7 @@
             {
               name: 'isOpenAll()',
               doc: '当前状态是否为全部打开的',
-              parameter: 'index',
+              parameter: '',
               return: "( true | false )"
             }
           ]
@@ -1089,6 +1215,7 @@
           ]
         });
       }
+
     };
 
     setTimeout(function () {
