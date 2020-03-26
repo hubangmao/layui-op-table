@@ -497,6 +497,8 @@ layui.define(['form', 'table'], function (exports) {
                 }, 20);
               } else {
                 var text = colsItem.onDraw ? colsItem.onDraw(openData) : openData[colsItem["field"]];
+                // 处理null字符串问题
+                text = text || "";
                 // 3、默认类型
                 html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "'>");
                 html.push("<span class='opTable-item-title'>" + colsItem["title"] + "：</span>");
