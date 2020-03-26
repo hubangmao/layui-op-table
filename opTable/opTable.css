@@ -26,7 +26,6 @@ html #layuicss-opTable {
     position: relative;
     display: inline-block;
     transition: transform .2s ease-in-out;
-
 }
 
 /*图标与内容占位块*/

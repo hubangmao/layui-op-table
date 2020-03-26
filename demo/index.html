@@ -1015,14 +1015,14 @@
           return def;
         }
 
-
         var value = getValue("href");
         // 滚动到指定位置
         if (value) {
-          var soDom = 'a[name="' + value + '"]';
-          $('html,body').animate({scrollTop: $(soDom).offset().top - 130}, 500, null, function () {
-            $(soDom).css('color', '#1E9FFF').fadeOut(80).fadeIn(40);
-          });
+          setTimeout(function () {
+            var dom = layui.$("a[data='" + value + "']");
+            dom.click();
+            dom.length <= 0 && layer.msg("无法定位：" + value);
+          }, 100);
         }
 
         // 展开示例代码位置
