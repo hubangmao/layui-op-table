@@ -459,6 +459,9 @@
 	<a class='layui-btn   layui-btn-xs' lay-event='toggleOpenIndex'>toggle(指定下标)</a>
 
 </script>
+<script type='text/html' id='toolDemoIconSet'>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='setOpenColumn'>将展开显示在3列</a>
+</script>
 <script src='../layui/layui.js'></script>
 
 <!--1、普通 案例-->
@@ -862,6 +865,7 @@
       elem: '#icon-setting'
       , id: 'icon-setting'
       , url: 'static/test.json'
+      , toolbar: '#toolDemoIconSet'
       // 第一列显示展开
       , openColumnIndex: 0
       // 不单独占一列
@@ -897,6 +901,24 @@
         layer.msg("修改内容已输出到日志窗口");
       }, openType: 0
     });
+
+
+    var isNewSetting = false;
+    layui.table.on('toolbar(icon-setting)', function (obj) {
+      if (obj.event === 'setOpenColumn') {
+        if (isNewSetting) {
+          // 更新配置参数
+          opTable.reload({openColumnIndex: 0, isAloneColumn: false});
+        } else {
+          // 更新配置参数
+          opTable.reload({openColumnIndex: 2, isAloneColumn: true});
+        }
+        isNewSetting = !isNewSetting;
+
+        layui.$("a[lay-event='setOpenColumn']").text(isNewSetting ? "还原到1列合并显示" : "将展开显示到第3列");
+      }
+    });
+
 
     //  可忽略
     setTimeout(function () {

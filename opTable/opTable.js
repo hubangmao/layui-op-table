@@ -49,9 +49,27 @@ layui.define(['form', 'table'], function (exports) {
             , options = that.config
             , id = options.id || options.index;
         return {
+          /**
+           * 重新加载 哦penTable
+           * @param options layui table 参数 和opTable参数
+           * @returns {thisIns}
+           */
           reload: function (options) {
+            var defIsAloneColumn = that.config.isAloneColumn
+                , defOpenColumnIndex = that.config.openColumnIndex
+                , colArr = that.config.cols[0];
             that.config = $.extend(that.config, options);
-            that.config.isAloneColumn && that.config.cols[0].splice(0, 1);
+            // 下标越界问题
+            options.openColumnIndex = options.openColumnIndex > colArr.length ? colArr.length : options.openColumnIndex;
+            // 单独显示列 移除第一次创建的列
+            if (defIsAloneColumn) {
+              colArr.splice(defOpenColumnIndex, 1)
+            } else if (defOpenColumnIndex !== that.config.openColumnIndex) {
+              // 不在原列显示 需要移除
+              var openColumn = colArr[defOpenColumnIndex];
+              openColumn.title = openColumn.opDefTitle;
+              openColumn.templet = openColumn.opDefTem;
+            }
             that.render();
             return this;
           }
@@ -143,12 +161,6 @@ layui.define(['form', 'table'], function (exports) {
             });
             // 所有项===已展开项则为全部展开
             return localTag.length === isOpenAll.length;
-          }
-
-          // 获取展开所有 图标
-          , getOpenAllIcon: function () {
-
-
           }
         }
       }
@@ -247,10 +259,10 @@ layui.define(['form', 'table'], function (exports) {
       //2、与数据占一列
       var openColumn = colArr[options.openColumnIndex];
       delete openColumn["edit"];
-
+      openColumn.opDefTitle = openColumn.title;
       // 展开显示表格||存在排序 都不支持展开全部
       openColumn.title = getOpenAllIcon(openTable || openColumn["sort"], options.elem, allIcon()) + ("<span class='opTable-span-seize'></span>") + openColumn.title;
-      var defTem = openColumn.templet;
+      openColumn.opDefTem = openColumn.templet;
       openColumn.templet = function (item) {
         // 解决页面多个表格问题
         var cla = getOpenClickClass(options.elem, false);
@@ -264,7 +276,7 @@ layui.define(['form', 'table'], function (exports) {
             + "' title='展开' "
             + indexByIcon(item.LAY_INDEX) + "></i>")
             + ("<span class='opTable-span-seize'></span>")
-            + (defTem ? defTem(item) : item[openColumn.field]);
+            + (openColumn.opDefTem ? openColumn.opDefTem(item) : item[openColumn.field]);
       };
     }
 
