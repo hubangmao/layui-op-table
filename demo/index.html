@@ -787,17 +787,21 @@
     var status;
     // 监听工具栏
     layui.table.on('toolbar(test3)', function (obj) {
-      // 1、重载
+
       if (obj.event === 'openAll') {
         opTable.openAll();
         layer.msg("展开全部 isOpenAll: " + opTable.isOpenAll());
       } else if (obj.event === 'closeAll') {
         opTable.closeAll();
         layer.msg("关闭全部 isOpenAll: " + opTable.isOpenAll())
-      } else if (obj.event === "reload") {
-        opTable.reload({opOrientation: "h"});
+      } else
+
+      // 1、重载
+      if (obj.event === "reload") {
+        // {} 可以是layui.table的所有的参数哟
+        opTable.reload({opOrientation: "h", where: {id: 1}});
       }
-      // 2、获取当前 layui table 指针
+      // 2、获取当前 layui table 引用
       else if (obj.event === "getLayuiTable") {
         layer.msg("已输出到日志窗口");
         console.log(opTable.config.table)
@@ -811,6 +815,7 @@
       else if (obj.event === "opOrientation") {
         opTable.reload({opOrientation: opTable.config.opOrientation === "v" ? "h" : "v"});
         setTimeout(function () {
+          // 展开第一行
           opTable.openIndex(0);
           layer.msg(opTable.config.opOrientation);
         }, 40)
@@ -870,6 +875,7 @@
       , openColumnIndex: 0
       // 不单独占一列
       , isAloneColumn: false
+      , opOrientation: 'h'
       , openIcon: {
         '-1': 'static/ic-open/ic-1.png',
         '2': 'static/ic-open/ic-3.svg',

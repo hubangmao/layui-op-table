@@ -374,9 +374,9 @@ layui.define(['form', 'table'], function (exports) {
 
             }
 
-            // 把添加的 tr 绑定到当前 移除时使用
+            // 把添加的 tr 绑定到当前 移除时使用 独占一列时 将表格列分配+1
             this.addTR = $([
-              "<tr><td class='opTable-open-td'  colspan='" + (colArr.length + 1) + "'>"
+              "<tr><td class='opTable-open-td'  colspan='" + (colArr.length + (options.isAloneColumn ? 1 : 0)) + "'>"
               , "<div style='margin-left: 50px;display: none'></div>"
               , "</td></tr>"].join("")
             );
