@@ -201,11 +201,13 @@ layui.define(['form', 'table'], function (exports) {
         , colArr = options.cols[0]
         , openCols = options.openCols || []
         , openNetwork = options.openNetwork || null
-        , openTable = options.openTable || null
-        , done = options.done;
+        , openTable = options.openTable || null;
+
 
     // 展开显示表格 同时只支持展开一个
     options.openType = openTable ? OPEN_DEF : options.openType;
+    options.layuiDone = options.done || options.layuiDone;
+
     // 下标越界问题
     options.openColumnIndex = options.openColumnIndex > colArr.length ? colArr.length : options.openColumnIndex;
     delete options["done"];
@@ -285,9 +287,8 @@ layui.define(['form', 'table'], function (exports) {
         $.extend({
           done: function (res, curr, count) {
             initExpandedListener();
-            if (done) {
-              done(res, curr, count)
-            }
+            console.log("到这里了", options.layuiDone)
+            options.layuiDone && options.layuiDone(res, curr, count)
           }
         }, options));
 
