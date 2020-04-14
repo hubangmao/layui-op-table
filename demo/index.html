@@ -1053,6 +1053,13 @@
           ]]
           , data: [
             {
+              parameter: 'openVisible',
+              type: 'boolean',
+              doc: '是否支持展开操作，默认：true 开启可展开操作 ',
+              code: "",
+              version: 'v1.3'
+            },
+            {
               parameter: 'openCols',
               type: 'Array',
               doc: '展开列配置，类似 layui.table 【cols】',
@@ -1116,6 +1123,7 @@
               code: ""
             }
           ]
+          , limit: 20
           , openCols: [{
             field: 'code', title: '示例值', templet: function (it) {
               if (!it.code) {
