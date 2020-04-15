@@ -544,9 +544,11 @@
        * 说明子表的 lay-filter='filter' 值与ID参数相同(去掉 # .)
        */
       openTable: function (itemData) {
+
         return {
-          elem: '#child'
-          , id: 'child'
+          // 由于同时支持展开多个表格 组装唯一的id
+          elem: '#child' + itemData.LAY_INDEX
+          , id: 'child' + itemData.LAY_INDEX
           , url: 'static/test.json'
           , page: true
           , where: {id: itemData.id}

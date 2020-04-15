@@ -84,11 +84,9 @@ layui.define(['form', 'table'], function (exports) {
 
           // 展开全部
           , openAll: function () {
-            // 表格 同时只支持展开一项
-            if (that.config.openTable || this.isOpenAll()) {
+            if (this.isOpenAll()) {
               return this;
             }
-
             var def = that.config.openType;
             that.config.openType = OPEN_ALL;
             $("." + getOpenClickClass(that.config.elem, true)).parent().click();
@@ -214,7 +212,7 @@ layui.define(['form', 'table'], function (exports) {
 
 
     // 展开显示表格 同时只支持展开一个
-    options.openType = openTable ? OPEN_DEF : options.openType;
+    // options.openType = openTable ? OPEN_DEF : options.openType;
     options.layuiDone = options.done || options.layuiDone;
 
     // 下标越界问题
@@ -253,7 +251,7 @@ layui.define(['form', 'table'], function (exports) {
         colArr.splice(options.openColumnIndex, 0, {
           align: 'left',
           width: 50,
-          title: getOpenAllIcon(openTable, options.elem, allIcon()),
+          title: getOpenAllIcon(false, options.elem, allIcon()),
           templet: function (item) {
             // 解决页面多个表格问题
             var cla = getOpenClickClass(options.elem, false);
@@ -272,8 +270,8 @@ layui.define(['form', 'table'], function (exports) {
         var openColumn = colArr[options.openColumnIndex];
         delete openColumn["edit"];
         openColumn.opDefTitle = openColumn.title;
-        // 展开显示表格||存在排序 都不支持展开全部
-        openColumn.title = getOpenAllIcon(openTable || openColumn["sort"], options.elem, allIcon()) + ("<span class='opTable-span-seize'></span>") + openColumn.title;
+        // 存在排序 都不支持展开全部
+        openColumn.title = getOpenAllIcon(openColumn["sort"], options.elem, allIcon()) + ("<span class='opTable-span-seize'></span>") + openColumn.title;
         openColumn.opDefTem = openColumn.templet;
         openColumn.templet = function (item) {
           // 解决页面多个表格问题
@@ -315,7 +313,6 @@ layui.define(['form', 'table'], function (exports) {
           .unbind("click")
           .click(function (e) {
             layui.stope(e);
-
             var that = $(this).children()
                 , _this = this
                 , itemIndex = parseInt(that.attr("data"))
