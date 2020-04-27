@@ -565,6 +565,7 @@
           ]]
         }
       }
+      , openType: 1
 
     });
 
@@ -704,7 +705,9 @@
           field: 'classifyName',
           title: '职业',
           type: 'select',
-          items: getTestItems(),
+          items: function (lineData) {
+            return getTestItems();
+          },
           /**
            * 绘制 <option></option>  回调
            * @param it （循环items参数时的子项）
@@ -850,7 +853,7 @@
     });
 
     function getTestItems() {
-      return [{id: 1, title: '作家'}, {id: 2, title: '诗人'}, {id: 3, title: '酱油'}, {id: 4, title: '校长'}];
+      return [{id: 1, value: '作家'}, {id: 2, value: '诗人'}, {id: 3, value: '酱油'}, {id: 4, value: '校长'}];
     }
 
     //可忽略

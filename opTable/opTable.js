@@ -25,11 +25,6 @@ layui.define(['form', 'table'], function (exports) {
           that.config = $.extend({}, that.config, options);
           return that;
         }
-
-        // 事件监听
-        //, on: function (events, callback) {
-        //  return layui.onevent.call(this, MOD_NAME, events, callback);
-        //}
       }
       // 展开列需要需要显示的数据 数据格式为 每个页面唯一的（LAY_IINDEX）下标绑定数据  对应的数据
       , openItemData = {}
@@ -55,28 +50,15 @@ layui.define(['form', 'table'], function (exports) {
            * @returns {thisIns}
            */
           reload: function (options) {
-            var defIsAloneColumn = that.config.isAloneColumn && that.config.openVisible
-                , defOpenColumnIndex = that.config.openColumnIndex
-                , colArr = that.config.cols[0];
-
             options = $.extend(that.config, options);
             that.config = options;
 
-            // 下标越界问题
-            options.openColumnIndex = options.openColumnIndex > colArr.length ? colArr.length : options.openColumnIndex;
-            // 单独显示列 移除第一次创建的列
-            if (defIsAloneColumn) {
-              colArr.splice(defOpenColumnIndex, 1)
-            } else if (defOpenColumnIndex !== that.config.openColumnIndex) {
-              // 不在原列显示 需要移除
-              var openColumn = colArr[defOpenColumnIndex];
-              openColumn.title = openColumn.opDefTitle;
-              openColumn.templet = openColumn.opDefTem;
+            // 刷新时记录页码
+            if (that.config.table.config.page) {
+              that.config.page.limit = that.config.table.config.page.limit;
+              that.config.page.curr = that.config.table.config.page.curr;
             }
 
-            // 记录页码
-            that.config.page.limit = that.config.table.config.page.limit;
-            that.config.page.curr = that.config.table.config.page.curr;
             that.render();
             return this;
           }
@@ -173,7 +155,9 @@ layui.define(['form', 'table'], function (exports) {
       , Class = function (options) {
         var that = this;
         that.index = ++opTable.index;
+        console.log("克隆前")
         that.config = $.extend({}, that.config, opTable.config, options);
+        console.log("克隆后");
         that.render();
         return this;
       };
@@ -209,15 +193,25 @@ layui.define(['form', 'table'], function (exports) {
         , openCols = options.openCols || []
         , openNetwork = options.openNetwork || null
         , openTable = options.openTable || null;
-
-
-    // 展开显示表格 同时只支持展开一个
-    // options.openType = openTable ? OPEN_DEF : options.openType;
     options.layuiDone = options.done || options.layuiDone;
+
+    colArr.forEach(function (it, i) {
+      // 当前列属于图标列
+      if (it.isOpenCol) {
+        // 独占一行 移除行
+        if (options.isAloneColumn) {
+          colArr.splice(i, 1);
+        } else {
+          // 移除合并图标
+          it.title = it.opDefTitle || it.title;
+        }
+      }
+    });
 
     // 下标越界问题
     options.openColumnIndex = options.openColumnIndex > colArr.length ? colArr.length : options.openColumnIndex;
     delete options["done"];
+
 
     // 图标
     var allIcon = function () {
@@ -249,8 +243,8 @@ layui.define(['form', 'table'], function (exports) {
       if (options.isAloneColumn) {
         //  1、在指定列 插入可展开操作
         colArr.splice(options.openColumnIndex, 0, {
-          align: 'left',
           width: 50,
+          isOpenCol: true,
           title: getOpenAllIcon(false, options.elem, allIcon()),
           templet: function (item) {
             // 解决页面多个表格问题
@@ -270,11 +264,10 @@ layui.define(['form', 'table'], function (exports) {
         var openColumn = colArr[options.openColumnIndex];
         delete openColumn["edit"];
         openColumn.opDefTitle = openColumn.title;
+        openColumn.isOpenCol = true;
         // 存在排序 都不支持展开全部
         openColumn.title = getOpenAllIcon(openColumn["sort"], options.elem, allIcon()) + ("<span class='opTable-span-seize'></span>") + openColumn.title;
-        openColumn.opDefTem = openColumn.templet;
         openColumn.templet = function (item) {
-          // 解决页面多个表格问题
           var cla = getOpenClickClass(options.elem, false);
           openItemData[cla] = openItemData[cla] || {};
           openItemData[cla][item.LAY_INDEX] = item;
@@ -286,7 +279,7 @@ layui.define(['form', 'table'], function (exports) {
               + "' title='展开' "
               + indexByIcon(item.LAY_INDEX) + "></i>")
               + ("<span class='opTable-span-seize'></span>")
-              + (openColumn.opDefTem ? openColumn.opDefTem(item) : item[openColumn.field]);
+              + (openColumn.onDraw ? openColumn.onDraw(item) : item[openColumn.field]);
         };
       }
     }
@@ -486,8 +479,7 @@ layui.define(['form', 'table'], function (exports) {
                 var child = ["<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "' >"];
                 child.push("<span style='color: #99a9bf'>" + colsItem["title"] + "：</span>");
                 child.push("<div class='layui-input-inline'><select  lay-filter='" + colsItem.field + "'>");
-                colsItem.items.forEach(function (it) {
-                  it = colsItem.onDraw(it, openData);
+                colsItem.items(openData).forEach(function (it) {
                   child.push("<option value='" + it.id + "' ");
                   child.push(it.isSelect ? " selected='selected' " : "");
                   child.push(" >" + it.value + "</option>");
@@ -496,11 +488,10 @@ layui.define(['form', 'table'], function (exports) {
                 child.push("</div>");
                 html.push(child.join(""));
                 setTimeout(function () {
-                  form.render();
+                  layui.form.render();
                   //  监听 select 修改
-                  form.on('select(' + colsItem.field + ')', function (data) {
-
-                    if (options.onEdit && colsItem.isEdit(data, openData)) {
+                  layui.form.on('select(' + colsItem.field + ')', function (data) {
+                    if (options.onEdit && colsItem.isEdit && colsItem.isEdit(data, openData)) {
                       var json = {};
                       json.value = data.value;
                       json.field = colsItem.field;
