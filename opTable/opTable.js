@@ -50,11 +50,9 @@ layui.define(['form', 'table'], function (exports) {
            * @returns {thisIns}
            */
           reload: function (options) {
-            options = $.extend(that.config, options);
-            that.config = options;
-
-            // 刷新时记录页码
-            if (that.config.table.config.page) {
+            that.config = $.extend(that.config, options);
+            // 如果本次reload有页码则不使用上次记录的页码
+            if (!options.page && that.config.table.config.page) {
               that.config.page.limit = that.config.table.config.page.limit;
               that.config.page.curr = that.config.table.config.page.curr;
             }
@@ -155,9 +153,7 @@ layui.define(['form', 'table'], function (exports) {
       , Class = function (options) {
         var that = this;
         that.index = ++opTable.index;
-        console.log("克隆前")
         that.config = $.extend({}, that.config, opTable.config, options);
-        console.log("克隆后");
         that.render();
         return this;
       };
@@ -166,6 +162,8 @@ layui.define(['form', 'table'], function (exports) {
   Class.prototype.config = {
     // 是否显示展开 默认显示
     openVisible: true
+    // 是否支持展开全部
+    , isOpenAllClick: true
     , openType: OPEN_DEF
     // 展开的item (垂直v|水平h) 排序
     , opOrientation: 'v'
@@ -245,7 +243,7 @@ layui.define(['form', 'table'], function (exports) {
         colArr.splice(options.openColumnIndex, 0, {
           width: 50,
           isOpenCol: true,
-          title: getOpenAllIcon(false, options.elem, allIcon()),
+          title: getOpenAllIcon(!options.isOpenAllClick, options.elem, allIcon()),
           templet: function (item) {
             // 解决页面多个表格问题
             var cla = getOpenClickClass(options.elem, false);
@@ -421,7 +419,6 @@ layui.define(['form', 'table'], function (exports) {
 
               // 设置展开表格颜色为浅色背景
               addTD.css("cssText", "background-color:#FCFCFC!important");
-
               options.childTable = layui.table.render(tableOptions);
             } else {
               //  3、从左到右依次排列 Item 默认风格
@@ -508,7 +505,7 @@ layui.define(['form', 'table'], function (exports) {
                 // 3、默认类型
                 html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "'>");
                 html.push("<span class='opTable-item-title'>" + colsItem["title"] + "：</span>");
-                html.push((colsItem.onEdit ?
+                html.push((colsItem.edit ?
                         ("<input  class='opTable-exp-value opTable-exp-value-edit' autocomplete='off' name='" + colsItem["field"] + "' value='" + text + "'/>")
                         : ("<span class='opTable-exp-value' >" + text + "</span>")
                 ));
@@ -576,6 +573,10 @@ layui.define(['form', 'table'], function (exports) {
           .parent()
           .unbind("click")
           .click(function () {
+            if (!options.isOpenAllClick) {
+              return
+            }
+
             var tag = $(this).find("i").eq(0), status = tag.attr(KEY_STATUS);
             if (status === ON) {
               tag.addClass("opTable-open-up")
