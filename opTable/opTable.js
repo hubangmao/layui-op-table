@@ -50,6 +50,7 @@ layui.define(['form', 'table'], function (exports) {
            * @returns {thisIns}
            */
           reload: function (options) {
+            options = options || {};
             that.config = $.extend(that.config, options);
             // 如果本次reload有页码则不使用上次记录的页码
             if (!options.page && that.config.table.config.page) {
