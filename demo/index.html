@@ -472,6 +472,11 @@
   }).extend({
     opTable: '/opTable'
   }).use(['opTable'], function () {
+
+    setTimeout(function () {
+      layer.msg("Hello Word ! ");
+    }, 400);
+
     var opTable = layui.opTable.render({
       elem: '#test'
       , id: '#test'
