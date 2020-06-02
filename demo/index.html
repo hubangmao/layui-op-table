@@ -215,6 +215,30 @@
 			border: 1px solid #eaeefb;
 			border-radius: 4px
 		}
+
+		/*分辨率低的 重新调整页面搜索部分宽度空间*/
+		@media screen and (max-width: 768px) {
+			.div-img-logo {
+				height: 60px;
+			}
+
+			.div-img-logo img {
+				width: 130px;
+				margin-top:18px;
+			}
+
+			.div-img-logo span {
+				margin-top: 22px;
+				height: 15px;
+				line-height: 15px;
+				font-size: 10px;
+			}
+
+			#layui-layer1 {
+				display: none !important;
+			}
+		}
+
 	</style>
 </head>
 <body>
@@ -480,7 +504,7 @@
     var opTable = layui.opTable.render({
       elem: '#test'
       , id: '#test'
-      , url: 'static/test.json'
+      , url: 'static/test.json'1
       , toolbar: '#toolDemo'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
@@ -784,7 +808,7 @@
         console.log("onCloseAll")
       },
       /**
-       * 当关闭全部时回调
+       * 小项区域点击回调
        * @param obj
        */
       onItemClick: function (obj) {
