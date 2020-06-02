@@ -5,7 +5,7 @@
 ####  **介绍** 
 
 Layui Table 数据列数过多解决方案。  
-初衷 体验过类似效果的UI很实用，着手在Layui上实现了一套。  
+初衷 体验过类似效果的UI很实用，着手在Layui上实现了一套。   
 
 [演示站点](https://hbangmao.gitee.io/OPTable/index.html) 
 
