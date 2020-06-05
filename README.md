@@ -96,23 +96,34 @@ Layui Table 数据列数过多解决方案。
         , {field: 'city', title: '城市', edit: true}
       ]],
 
-      //  展开显示表格 参数支持layui所有参数
-      openTable: {
-        elem: '#child'
-        , id: 'child'
-        , url: 'static/test.json'
-        , page: true
-        , cols: [[
-          {field: 'id', title: 'ID'}
-          , {field: 'username', title: '用户名'}
-          , {field: 'logins', title: '登录名'}
-          , {field: 'city', title: '城市'}
-          , {field: 'classify', title: '职业'}
-          , {field: 'wealth', title: '财产值'}
-          , {field: 'experience', title: '人气值'}
-          , {field: 'score', title: '分数'}
-          , {title: '操作', toolbar: '#barDemo', width: 150}
-        ]]
+     /**
+       * 展开显示表格 参数支持layui所有参数
+       * @param itemData 当前行数据
+       * @returns 支持 layui table 的所有配置参数
+       *
+       * 说明子表的 lay-filter='filter' 值与ID参数相同(去掉 # .)
+       */
+      openTable: function (itemData) {
+
+        return {
+          // 由于同时支持展开多个表格 组装唯一的id
+          elem: '#child' + itemData.LAY_INDEX
+          , id: 'child' + itemData.LAY_INDEX
+          , url: 'static/test.json'
+          , page: true
+          , where: {id: itemData.id}
+          , cols: [[
+            {field: 'id', title: 'ID'}
+            , {field: 'username', title: '用户名'}
+            , {field: 'logins', title: '登录名'}
+            , {field: 'city', title: '城市'}
+            , {field: 'classify', title: '职业'}
+            , {field: 'wealth', title: '财产值'}
+            , {field: 'experience', title: '人气值'}
+            , {field: 'score', title: '分数'}
+            , {title: '操作', toolbar: '#barDemo', width: 150}
+          ]]
+        }
       }
 
     });
