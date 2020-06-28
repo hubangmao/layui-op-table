@@ -224,7 +224,7 @@
 
 			.div-img-logo img {
 				width: 130px;
-				margin-top:18px;
+				margin-top: 18px;
 			}
 
 			.div-img-logo span {
@@ -504,7 +504,7 @@
     var opTable = layui.opTable.render({
       elem: '#test'
       , id: '#test'
-      , url: 'static/test.json'1
+      , url: 'static/test.json'
       , toolbar: '#toolDemo'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
@@ -1141,8 +1141,12 @@
             {
               parameter: 'opOrientation',
               type: 'String',
-              doc: '展开的item的展示方式： (垂直v|水平h)  默认为垂直排列',
-              code: ""
+              doc: '展开的item的展示方式： 垂直(v、v1、v2、v3)|水平h  默认为垂直排列 ',
+              code: "opOrientation:'v'//一个Item占一行" +
+                  "\nopOrientation:'v2'//两个Item占一行" +
+                  "\nopOrientation:'v3'//三个Item占一行" +
+                  "\nopOrientation:'v4'//四个Item占一行"+
+                  "\n\nopOrientation:'h'//水平排列空间分配完后，自动换行。"
             },
             {
               parameter: 'openType',

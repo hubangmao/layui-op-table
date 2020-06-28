@@ -56,9 +56,29 @@ html #layuicss-opTable {
     font-size: 16px;
 }
 
+/*垂直排列 一个 item 占一行 */
 .opTable-open-item-div[opOrientation='v'] {
     display: block;
 }
+
+/*垂直排列 两个 item 占一行 两列*/
+.opTable-open-item-div[opOrientation='v2'] {
+    display: inline-block;
+    width: 50%;
+}
+
+/*垂直排列 三个 item 占一行 三列*/
+.opTable-open-item-div[opOrientation='v3'] {
+    display: inline-block;
+    width: 30%;
+}
+
+/*垂直排列 四个 item 占一行 四列*/
+.opTable-open-item-div[opOrientation='v4'] {
+    display: inline-block;
+    width: 25%;
+}
+
 
 /*水平排列*/
 .opTable-open-item-div[opOrientation='h'] {
