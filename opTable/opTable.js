@@ -285,6 +285,8 @@ layui.define(['form', 'table'], function (exports) {
 
 
     //  2、表格Render
+    console.log("查看配置", options);
+
     options.table = table.render(
         $.extend({
           done: function (res, curr, count) {

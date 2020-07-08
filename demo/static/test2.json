@@ -1,0 +1,21 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+      "username": "柳岩-子表数据",
+      "sex": "女",
+      "sexId": 2,
+      "city": "湖南衡阳",
+      "sign": " 嘟嘟嘟 滴滴滴 哒哒哒",
+      "experience": 2556656,
+      "logins": 8848,
+      "wealth": "7000 000 000",
+      "classify": "武术家",
+      "classifyId": 1,
+      "score": 5700520520
+    }
+  ]
+}

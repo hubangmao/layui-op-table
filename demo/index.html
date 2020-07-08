@@ -511,6 +511,7 @@
         , {field: 'username', title: '用户名', edit: true}
         , {field: 'logins', title: '登录名', edit: true}
         , {field: 'city', title: '城市', edit: true}
+
         , {title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
       ]]
 
@@ -522,8 +523,7 @@
         , {field: 'experience', title: '经验值'}
         , {field: 'experience', title: '积分'}
         , {field: 'score', title: '分数', edit: true}
-        , {field: 'classify', title: '职业'}
-      ]
+        , {field: 'classify', title: '职业'}]
       , onEdit: function (data) {
         layer.msg("修改内容已输出到日志窗口");
       }, openType: 0
@@ -575,10 +575,9 @@
       openTable: function (itemData) {
 
         return {
-          // 由于同时支持展开多个表格 组装唯一的id
           elem: '#child' + itemData.LAY_INDEX
           , id: 'child' + itemData.LAY_INDEX
-          , url: 'static/test.json'
+          , url: 'static/test2.json'
           , page: true
           , where: {id: itemData.id}
           , cols: [[
@@ -591,7 +590,13 @@
             , {field: 'experience', title: '人气值'}
             , {field: 'score', title: '分数'}
             , {title: '操作', toolbar: '#barDemo', width: 150}
-          ]]
+          ]],
+          done: function () {
+            //  获取值
+            layui.table.on('tool(' + 'child' + itemData.LAY_INDEX + ')', function (obj) {
+              layer.msg(JSON.stringify(obj.data, null, "\t"));
+            });
+          }
         }
       }
       , openType: 1
@@ -600,14 +605,15 @@
 
     setTimeout(function () {
       layui.$('.layui-code-test1').text(layui.$('#layui-code-test1').html())
-    }, 20)
+    }, 20);
 
 
     // 监听工具栏
     layui.table.on('toolbar(test1)', function (obj) {
       if (obj.event === "getChildTable") {
-        layer.msg("已输出到日志窗口");
-        console.log(opTable.config.childTable)
+        var child = opTable.config.childTable;
+        console.log(child);
+        layer.msg(child ? child.config.id : "未创建子表：null");
       }
     });
 
@@ -875,9 +881,9 @@
     layui.table.on('tool(test3)', function (obj) {
       var data = obj.data;
       if (obj.event === 'del') {
-        layer.msg("删除");
+        layer.msg("删除：" + JSON.stringify(obj.data, null, "\t"));
       } else if (obj.event === 'edit') {
-        layer.msg("编辑");
+        layer.msg("编辑：" + JSON.stringify(obj.data, null, "\t"));
       }
     });
 
@@ -1141,11 +1147,11 @@
             {
               parameter: 'opOrientation',
               type: 'String',
-              doc: '展开的item的展示方式： 垂直(v、v1、v2、v3)|水平h  默认为垂直排列 ',
+              doc: '展开的item的展示方式： 垂直(v、v2、v3、v4)|水平h  默认为垂直排列 ',
               code: "opOrientation:'v'//一个Item占一行" +
                   "\nopOrientation:'v2'//两个Item占一行" +
                   "\nopOrientation:'v3'//三个Item占一行" +
-                  "\nopOrientation:'v4'//四个Item占一行"+
+                  "\nopOrientation:'v4'//四个Item占一行" +
                   "\n\nopOrientation:'h'//水平排列空间分配完后，自动换行。"
             },
             {
@@ -1317,9 +1323,9 @@
     layui.table.on('tool(test)', function (obj) {
       var data = obj.data;
       if (obj.event === 'del') {
-        layer.msg("删除");
+        layer.msg("删除：" + JSON.stringify(obj.data, null, "\t"));
       } else if (obj.event === 'edit') {
-        layer.msg("编辑");
+        layer.msg("编辑：" + JSON.stringify(obj.data, null, "\t"));
       }
     });
 
