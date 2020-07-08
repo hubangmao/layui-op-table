@@ -73,7 +73,7 @@ Layui Table 数据列数过多解决方案。
 ![效果预览1](https://images.gitee.com/uploads/images/2020/0315/014102_eab37903_734930.png "demo_看图王.png")
 
 #### 可配置属性  
-![可配置属性](https://images.gitee.com/uploads/images/2020/0316/130215_a7c537de_734930.png "属性.png")
+![可配置属性](https://images.gitee.com/uploads/images/2020/0628/141951_dc80f752_734930.png "可配置属性.png")
 #### 全局方法
 ![全局方法](https://images.gitee.com/uploads/images/2020/0316/130239_0067a947_734930.png "全局方法.png") 
 #### 回调方法
