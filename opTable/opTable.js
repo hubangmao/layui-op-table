@@ -609,7 +609,7 @@ layui.define(['form', 'table'], function (exports) {
 
     //  6、单元格编辑
     layui.table.on('edit(' + elem + ')', function (obj) {
-      options.onEdit && options.onEdit(obj)
+      options.onEdit && options.onEdit(obj, layui.$(this))
     });
 
   };

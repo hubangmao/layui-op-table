@@ -581,7 +581,7 @@
           , page: true
           , where: {id: itemData.id}
           , cols: [[
-            {field: 'id', title: 'ID'}
+            {field: 'id', title: 'ID', edit: true}
             , {field: 'username', title: '用户名'}
             , {field: 'logins', title: '登录名'}
             , {field: 'city', title: '城市'}
@@ -592,8 +592,8 @@
             , {title: '操作', toolbar: '#barDemo', width: 150}
           ]],
           done: function () {
-            //  获取值
-            layui.table.on('tool(' + 'child' + itemData.LAY_INDEX + ')', function (obj) {
+            //  监听子表 修改
+            layui.table.on('edit(' + 'child' + itemData.LAY_INDEX + ')', function (obj) {
               layer.msg(JSON.stringify(obj.data, null, "\t"));
             });
           }
@@ -601,6 +601,16 @@
       }
       , openType: 1
 
+      // 发生修改时回调
+      , onEdit: function (obj, $e) {
+        // 由于子表是直接嵌套的layui.table 在顶级监听的子级都会生效
+        if ($e.parents(".opTable-open-td").length > 0) {
+          console.log("这是子表的修改");
+          return;
+        }
+
+        console.log(obj);
+      }
     });
 
     setTimeout(function () {
