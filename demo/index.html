@@ -602,13 +602,7 @@
       , openType: 1
 
       // 发生修改时回调
-      , onEdit: function (obj, $e) {
-        // 由于子表是直接嵌套的layui.table 在顶级监听的子级都会生效
-        if ($e.parents(".opTable-open-td").length > 0) {
-          console.log("这是子表的修改");
-          return;
-        }
-
+      , onEdit: function (obj) {
         console.log(obj);
       }
     });

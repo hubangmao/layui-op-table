@@ -609,7 +609,11 @@ layui.define(['form', 'table'], function (exports) {
 
     //  6、单元格编辑
     layui.table.on('edit(' + elem + ')', function (obj) {
-      options.onEdit && options.onEdit(obj, layui.$(this))
+      // 子表修改情况不触发回调
+      if (layui.$(this).parents(".opTable-open-td").length > 0) {
+        return;
+      }
+      options.onEdit && options.onEdit(obj)
     });
 
   };
