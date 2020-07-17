@@ -509,21 +509,21 @@
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
         , {field: 'username', title: '用户名', edit: true}
-        , {field: 'logins', title: '登录名', edit: true}
+        , {field: 'classify', title: '职业'}
         , {field: 'city', title: '城市', edit: true}
-
         , {title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
       ]]
 
       //  展开的列配置
       , openCols: [
         {field: 'sex', title: '性别'}
+        , {field: 'logins', title: '登录名', edit: true}
         , {field: 'sign', title: '签名'}
         , {field: 'wealth', title: '财富'}
         , {field: 'experience', title: '经验值'}
         , {field: 'experience', title: '积分'}
         , {field: 'score', title: '分数', edit: true}
-        , {field: 'classify', title: '职业'}]
+      ]
       , onEdit: function (data) {
         layer.msg("修改内容已输出到日志窗口");
       }, openType: 0
