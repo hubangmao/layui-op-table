@@ -42,7 +42,6 @@ Layui Table 数据列数过多解决方案。
   }).extend({
     opTable: '/opTable'
   }).use(['opTable'], function () {
-       // 配置opTable 
   var opTable = layui.opTable.render({
       elem: '#test'
       , id: '#test'
@@ -53,13 +52,13 @@ Layui Table 数据列数过多解决方案。
         , {field: 'username', title: '用户名', edit: true}
         , {field: 'classify', title: '职业'}
         , {field: 'city', title: '城市', edit: true}
-        , {field: 'logins', title: '登录名', edit: true}
         , {title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
       ]]
 
       //  展开的列配置
       , openCols: [
         {field: 'sex', title: '性别'}
+        , {field: 'logins', title: '登录名', edit: true}
         , {field: 'sign', title: '签名'}
         , {field: 'wealth', title: '财富'}
         , {field: 'experience', title: '经验值'}
@@ -71,7 +70,7 @@ Layui Table 数据列数过多解决方案。
  });
 ```
 #### 效果预览
-![效果预览1](https://images.gitee.com/uploads/images/2020/0717/105450_a76ceaac_734930.png "QQ截图20200717105424.png") 
+![效果预览1](https://images.gitee.com/uploads/images/2020/0717/105747_80b12b12_734930.png "QQ截图20200717105424.png") 
 
 
 #### 可配置属性  
