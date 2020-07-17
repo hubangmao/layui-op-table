@@ -42,6 +42,7 @@ Layui Table 数据列数过多解决方案。
   }).extend({
     opTable: '/opTable'
   }).use(['opTable'], function () {
+       // 配置opTable 
   var opTable = layui.opTable.render({
       elem: '#test'
       , id: '#test'
@@ -50,8 +51,9 @@ Layui Table 数据列数过多解决方案。
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
         , {field: 'username', title: '用户名', edit: true}
-        , {field: 'logins', title: '登录名', edit: true}
+        , {field: 'classify', title: '职业'}
         , {field: 'city', title: '城市', edit: true}
+        , {field: 'logins', title: '登录名', edit: true}
         , {title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
       ]]
 
@@ -63,14 +65,14 @@ Layui Table 数据列数过多解决方案。
         , {field: 'experience', title: '经验值'}
         , {field: 'experience', title: '积分'}
         , {field: 'score', title: '分数', edit: true}
-        , {field: 'classify', title: '职业'}
       ]
     });
     
  });
 ```
 #### 效果预览
-![效果预览1](https://images.gitee.com/uploads/images/2020/0315/014102_eab37903_734930.png "demo_看图王.png")
+![效果预览1](https://images.gitee.com/uploads/images/2020/0717/105450_a76ceaac_734930.png "QQ截图20200717105424.png") 
+
 
 #### 可配置属性  
 ![可配置属性](https://images.gitee.com/uploads/images/2020/0628/141951_dc80f752_734930.png "可配置属性.png")
