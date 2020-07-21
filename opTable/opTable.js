@@ -8,7 +8,6 @@
 layui.define(['form', 'table'], function (exports) {
   var $ = layui.$
       , table = layui.table
-      , form = layui.form
       , VERSION = 1.3, MOD_NAME = 'opTable'
       // 展开 , 关闭
       , ON = 'on', OFF = 'off', KEY_STATUS = "status"
@@ -407,8 +406,16 @@ layui.define(['form', 'table'], function (exports) {
               if (typeof openTable !== "function") {
                 throw  "OPTable: openTable attribute is function ";
               }
-
               var tableOptions = openTable(bindOpenData);
+              tableOptions.layuiDone = tableOptions.done;
+              tableOptions.done = function (res, curr, count) {
+                // 子表行聚焦向上传递问题
+                $(".opTable-open-td tr").hover(function (e) {
+                  layui.stope(e)
+                });
+                tableOptions.layuiDone && tableOptions.layuiDone(res, curr, count);
+              };
+
               var id = tableOptions.elem.replace("#", '').replace(".", '');
               //2、展开显示表格
               divContent
@@ -610,7 +617,7 @@ layui.define(['form', 'table'], function (exports) {
     //  6、单元格编辑
     layui.table.on('edit(' + elem + ')', function (obj) {
       // 子表修改情况不触发回调
-      if (layui.$(this).parents(".opTable-open-td").length > 0) {
+      if ($(this).parents(".opTable-open-td").length > 0) {
         return;
       }
       options.onEdit && options.onEdit(obj)
