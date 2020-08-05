@@ -502,7 +502,7 @@
   }).use(['opTable'], function () {
 
     setTimeout(function () {
-      layer.msg("Hello Word ! ");
+      layer.msg("Hello Word . Welcome to OPTable ! ");
     }, 400);
 
     var opTable = layui.opTable.render({
@@ -510,6 +510,7 @@
       , id: '#test'
       , url: 'static/test.json'
       , toolbar: '#toolDemo'
+      , page: true
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
         , {field: 'username', title: '用户名', edit: true}
@@ -811,7 +812,7 @@
        * @param itemIndex 展开行下标
        */
       onClose: function (itemData, itemIndex) {
-        console.log("onClose")
+        console.log("onClose",itemData)
       },
       // 当展开全部时回调
       onOpenAll: function () {
@@ -896,7 +897,7 @@
     });
 
     function getTestItems() {
-      return [{id: 1, value: '作家'}, {id: 2, value: '诗人'}, {id: 3, value: '酱油'}, {id: 4, value: '校长'}];
+      return [{id: 1, value: '作家', isSelect: true}, {id: 2, value: '诗人'}, {id: 3, value: '酱油'}, {id: 4, value: '校长'}];
     }
 
     //可忽略

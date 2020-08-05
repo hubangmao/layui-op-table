@@ -478,12 +478,12 @@ layui.define(['form', 'table'], function (exports) {
             function appendItem(colsItem, openData) {
               //  1、自定义模板
               if (colsItem.templet) {
-                html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "'>")
+                html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' index='" + itemIndex + "' opOrientation='" + options.opOrientation + "'>")
                 html.push(colsItem.templet(openData));
                 html.push("</div>")
                 //  2、可下拉选择类型
               } else if (colsItem.type && colsItem.type === 'select') {
-                var child = ["<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "' >"];
+                var child = ["<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' index='" + itemIndex + "' opOrientation='" + options.opOrientation + "' >"];
                 child.push("<span style='color: #99a9bf'>" + colsItem["title"] + "：</span>");
                 child.push("<div class='layui-input-inline'><select  lay-filter='" + colsItem.field + "'>");
                 colsItem.items(openData).forEach(function (it) {
@@ -513,7 +513,7 @@ layui.define(['form', 'table'], function (exports) {
                 // 处理null字符串问题
                 text = text || "";
                 // 3、默认类型
-                html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' opOrientation='" + options.opOrientation + "'>");
+                html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' index='" + itemIndex + "' opOrientation='" + options.opOrientation + "'>");
                 html.push("<span class='opTable-item-title'>" + colsItem["title"] + "：</span>");
                 html.push((colsItem.edit ?
                         ("<input  class='opTable-exp-value opTable-exp-value-edit' autocomplete='off' name='" + colsItem["field"] + "' value='" + text + "'/>")
@@ -554,10 +554,12 @@ layui.define(['form', 'table'], function (exports) {
                   .unbind("click")
                   .click(function (e) {
                     var field = $(this).attr("id");
+                    // 根据下标获取行数据
+                    var lineData = openItemData[getOpenClickClass(options.elem, false)][$(this).attr("index")];
                     options.onItemClick({
-                      lineData: bindOpenData,
+                      lineData: lineData,
                       field: field,
-                      value: bindOpenData[field],
+                      value: lineData[field],
                       div: $(this),
                       e: e
                     });
