@@ -133,6 +133,89 @@ Layui Table 数据列数过多解决方案。
 
 ![展开显示表格](https://images.gitee.com/uploads/images/2020/0315/014136_eb18a686_734930.png "demo-open-table.png")
 
+
+##### 展开显示树形表格
+
+```
+  var opTable = layui.opTable.render({
+      elem: '#test-tree'
+      , id: '#test-tree'
+      , url: 'static/test.json'
+      , cols: [[
+        {field: 'id', title: 'ID', sort: true}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+      ]]
+      /**
+       * 展开显示树形表格
+       * @param itemData 当前行数据
+       * @returns
+       *
+       * 说明子表的 lay-filter='filter' 值与ID参数相同(去掉 # .)
+       */
+      , openTable: function (itemData) {
+        return {
+          elem: '#child_1_' + itemData.LAY_INDEX
+          , id: 'child_1_' + itemData.LAY_INDEX
+          , url: 'static/test2.json'
+          , page: true
+          , cols: [[
+            {field: 'id', title: 'ID', edit: true}
+            , {field: 'username', title: '用户名'}
+            , {field: 'logins', title: '登录名'}
+          ]]
+          , openTable: function (itemData) {
+            return {
+              elem: '#child_2_' + itemData.LAY_INDEX
+              , id: 'child_2_' + itemData.LAY_INDEX
+              , url: 'static/test2.json'
+              , page: true
+              , cols: [[
+                {field: 'id', title: 'ID', edit: true}
+                , {field: 'username', title: '用户名'}
+                , {field: 'logins', title: '登录名'}
+              ]]
+              , openTable: function (itemData) {
+                return {
+                  elem: '#child_3_' + itemData.LAY_INDEX
+                  , id: 'child_3_' + itemData.LAY_INDEX
+                  , url: 'static/test2.json'
+                  , openVisible: false
+                  , cols: [[
+                    {field: 'id', title: 'ID', edit: true}
+                    , {field: 'username', title: '用户名'}
+                    , {field: 'logins', title: '登录名'}
+                    , {field: 'city', title: '城市'}
+                    , {field: 'classify', title: '职业'}
+                    , {field: 'wealth', title: '财产值'}
+                    , {field: 'experience', title: '人气值'}
+                    , {field: 'score', title: '分数'}
+                    , {title: '操作', toolbar: '#barDemo', width: 150}
+                  ]]
+                  , done: function () {
+                    //  监听子表 修改
+                    layui.table.on('edit(' + 'child' + itemData.LAY_INDEX + ')', function (obj) {
+                      layer.msg(JSON.stringify(obj.data, null, "\t"));
+                    });
+                  }
+                  , onEdit: function (data) {
+                    console.log("表格4修改", data)
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      , openType: 1
+      , onEdit: function (data) {
+        console.log("表格1修改", data)
+        layer.msg(JSON.stringify(data));
+      }
+    });
+```
+##### 效果预览  
+![展开显示树形表格](https://images.gitee.com/uploads/images/2020/1024/110251_e300fa76_734930.png "展开显示树形表格")
 ##### 展开从网络加载内容
 
 ```
