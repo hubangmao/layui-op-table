@@ -134,7 +134,7 @@ Layui Table 数据列数过多解决方案。
 ![展开显示表格](https://images.gitee.com/uploads/images/2020/0315/014136_eb18a686_734930.png "demo-open-table.png")
 
 
-##### 展开显示树形表格
+##### 展开显示树形表格 _[演示](https://hbangmao.gitee.io/OPTable/layui-op-table/demo/index.html?href=href-op-tree)_ 
 
 ```
   var opTable = layui.opTable.render({
