@@ -2,13 +2,13 @@
  @ Name：layui 表格冗余列可展开显示
  @ Author：hbm
  @ License：MIT
- @ version 1.3
+ @ version 1.4
  */
 
 layui.define(['form', 'table'], function (exports) {
   var $ = layui.$
       , table = layui.table
-      , VERSION = 1.3, MOD_NAME = 'opTable'
+      , VERSION = 1.4, MOD_NAME = 'opTable'
       // 展开 , 关闭
       , ON = 'on', OFF = 'off', KEY_STATUS = "status"
       // openType 0、默认效果同时只展开一项  1、点击展开多项 2、 展开全部  3、关闭全部
@@ -27,6 +27,10 @@ layui.define(['form', 'table'], function (exports) {
       }
       // 展开列需要需要显示的数据 数据格式为 每个页面唯一的（LAY_IINDEX）下标绑定数据  对应的数据
       , openItemData = {}
+      // 表格配置项，通过表格唯一ID绑定配置详情 。
+      , openTitleHelpOption = {}
+      // 解决字表修改触发父级表格修改的问题
+      , isEditListener = true
       , getOpenClickClass = function (elem, isAddClickClass) {
         return elem.replace("#", '').replace(".", '') + (isAddClickClass ? 'opTable-i-table-open' : '')
       }
@@ -63,8 +67,9 @@ layui.define(['form', 'table'], function (exports) {
           , config: options
 
           // 展开全部
-          , openAll: function () {
+          , openAll: function (result) {
             if (this.isOpenAll()) {
+              result && result();
               return this;
             }
             var def = that.config.openType;
@@ -78,6 +83,7 @@ layui.define(['form', 'table'], function (exports) {
                 .attr(KEY_STATUS, ON);
 
             that.config.onOpenAll && that.config.onOpenAll();
+            result && result();
             return this;
           }
           // 关闭全部
@@ -147,6 +153,14 @@ layui.define(['form', 'table'], function (exports) {
             // 所有项===已展开项则为全部展开
             return localTag.length === isOpenAll.length;
           }
+          // 展开所有树形表格子表
+          , openTreeChildTable: function () {
+
+          }
+          // 关闭所有树形表格子表
+          , closeTreeChildTable: function () {
+
+          }
         }
       }
       //构造器
@@ -175,8 +189,6 @@ layui.define(['form', 'table'], function (exports) {
     , openIcon: {}
     // layui table引用
     , table: null
-    // 子table引用
-    , childTable: null
     // 展开动画执行时长
     , slideDownTime: 200
     // 关闭动画执行时长
@@ -191,7 +203,10 @@ layui.define(['form', 'table'], function (exports) {
         , openCols = options.openCols || []
         , openNetwork = options.openNetwork || null
         , openTable = options.openTable || null;
+
     options.layuiDone = options.done || options.layuiDone;
+
+    var singleElem = options.elem.replace("#", '').replace(".", '')
 
     colArr.forEach(function (it, i) {
       // 当前列属于图标列
@@ -203,6 +218,12 @@ layui.define(['form', 'table'], function (exports) {
           // 移除合并图标
           it.title = it.opDefTitle || it.title;
         }
+      }
+      if (it.opHelp) {
+        it.title = it.title.indexOf('opTable-span-help') === -1
+            ? it.title + '<span class="opTable-span-help" single="' + singleElem + it.field + '"></span>'
+            : it.title;
+        openTitleHelpOption[singleElem + it.field] = it.opHelp;
       }
     });
 
@@ -219,14 +240,16 @@ layui.define(['form', 'table'], function (exports) {
         return "style='background: url(" + icon + ") 0 0 no-repeat'";
       }
       return "";
-    }, allItemIcon = function () {
+    }
+        , allItemIcon = function () {
       // 全部item图标
       var icon = options.openIcon[ICON_DEF_ALL_ITEM_KEY];
       if (icon) {
         return "style='background: url(" + icon + ") 0 0 no-repeat'";
       }
       return "";
-    }, indexByIcon = function (index) {
+    }
+        , indexByIcon = function (index) {
       // 指定下标图标
       var iconPath = options.openIcon[index + ""];
       if (iconPath) {
@@ -284,8 +307,6 @@ layui.define(['form', 'table'], function (exports) {
 
 
     //  2、表格Render
-    console.log("查看配置", options);
-
     options.table = table.render(
         $.extend({
           done: function (res, curr, count) {
@@ -306,6 +327,7 @@ layui.define(['form', 'table'], function (exports) {
           .unbind("click")
           .click(function (e) {
             layui.stope(e);
+            console.log("点击次数")
             var that = $(this).children()
                 , _this = this
                 , itemIndex = parseInt(that.attr("data"))
@@ -319,8 +341,7 @@ layui.define(['form', 'table'], function (exports) {
                 itemClickClass = options.elem.replace("#", '').replace(".", '') + '-opTable-open-item-div';
 
             function initOnClose() {
-              options.onClose && options.onClose(bindOpenData, itemIndex)
-              options.childTable = null;
+              options.onClose && options.onClose(bindOpenData, itemIndex);
             }
 
             // 关闭全部
@@ -402,7 +423,9 @@ layui.define(['form', 'table'], function (exports) {
             // 1、从网络获取
             if (openNetwork) {
               loadNetwork();
-            } else if (openTable) {
+            }
+            // 2、展开显示表格
+            else if (openTable) {
               if (typeof openTable !== "function") {
                 throw  "OPTable: openTable attribute is function ";
               }
@@ -413,11 +436,20 @@ layui.define(['form', 'table'], function (exports) {
                 $(".opTable-open-td tr").hover(function (e) {
                   layui.stope(e)
                 });
+
+                /* $("tr").click(function (e) {
+                   setTimeout(function () {
+                     $(".layui-table-click").removeClass('layui-table-click');
+                   }, 40);
+                   // layui.stope(e);
+                 });*/
+
+                // 子表排序
                 tableOptions.layuiDone && tableOptions.layuiDone(res, curr, count);
               };
 
               var id = tableOptions.elem.replace("#", '').replace(".", '');
-              //2、展开显示表格
+
               divContent
                   .empty()
                   .append("<table id='" + id + "' lay-filter='" + id + "'></table>")
@@ -429,11 +461,13 @@ layui.define(['form', 'table'], function (exports) {
 
               // 设置展开表格颜色为浅色背景
               addTD.css("cssText", "background-color:#FCFCFC!important");
-              options.childTable = layui.table.render(tableOptions);
-            } else {
-              //  3、从左到右依次排列 Item 默认风格
+              layui.opTable.render(tableOptions);
+            }
+            // 3、从左到右依次排列 Item 默认风格
+            else {
               openCols.forEach(function (val, index) {
                 appendItem(val, bindOpenData);
+
               });
               divContent.append(html.join(''));
               this.addTR.find("div").slideDown(options.slideDownTime);
@@ -476,6 +510,14 @@ layui.define(['form', 'table'], function (exports) {
              * @param openData  展开数据
              */
             function appendItem(colsItem, openData) {
+              // 显示帮助图标
+              if (colsItem.opHelp) {
+                colsItem.title = colsItem.title.indexOf('opTable-span-help') === -1
+                    ? colsItem.title + '<span class="opTable-span-help" single="' + singleElem + colsItem.field + '"></span>'
+                    : colsItem.title;
+                openTitleHelpOption[singleElem + colsItem.field] = colsItem.opHelp;
+              }
+
               //  1、自定义模板
               if (colsItem.templet) {
                 html.push("<div id='" + colsItem.field + "' class='opTable-open-item-div " + itemClickClass + "' index='" + itemIndex + "' opOrientation='" + options.opOrientation + "'>")
@@ -573,11 +615,11 @@ layui.define(['form', 'table'], function (exports) {
             options.onInitSuccess && options.onInitSuccess(bindOpenData, itemIndex, this.addTR);
             setTimeout(function () {
               // 展开回调
-              options.onOpen && options.onOpen(bindOpenData, itemIndex, this.addTR);
+              options.onOpen && options.onOpen(bindOpenData, itemIndex, that.addTR);
+              initHelpListener();
             }, options.slideDownTime);
 
           });
-
 
       // (展开|关闭)全部
       $("." + getOpenAllClickClass(options.elem))
@@ -603,7 +645,26 @@ layui.define(['form', 'table'], function (exports) {
               options.thisIns.openAll();
             }
 
-          })
+          });
+
+      initHelpListener();
+    }
+
+
+    // 弹出帮助提示
+    function initHelpListener() {
+      $(".opTable-span-help").unbind("click").click(function () {
+        var that = $(this);
+        var opt = openTitleHelpOption[that.attr("single")];
+        var index = layer.tips(opt.text + "<span class='op-span-help-close'>关闭</span>", that.parent(), $.extend({
+          tips: 3, time: 40000, success: function () {
+            $(".op-span-help-close").click(function () {
+              layer.close(index);
+            })
+          }
+        }, opt.tipOpt))
+      });
+
     }
 
     //  4、监听排序事件
@@ -611,18 +672,21 @@ layui.define(['form', 'table'], function (exports) {
 
     //  5、监听表格排序
     table.on('sort(' + elem + ')', function (obj) {
-      options.onSort && options.onSort(obj)
+      options.onSort && options.onSort(obj);
       // 重新绑定事件
       initExpandedListener();
     });
 
     //  6、单元格编辑
     layui.table.on('edit(' + elem + ')', function (obj) {
-      // 子表修改情况不触发回调
-      if ($(this).parents(".opTable-open-td").length > 0) {
+      if (!isEditListener) {
         return;
       }
-      options.onEdit && options.onEdit(obj)
+      isEditListener = false;
+      options.onEdit && options.onEdit(obj);
+      setTimeout(function () {
+        isEditListener = true;
+      }, 100);
     });
 
   };
@@ -639,5 +703,6 @@ layui.define(['form', 'table'], function (exports) {
   layui.link(layui.cache.base + '/opTable.css?v=1' + VERSION, function () {
   }, 'opTable');
 
+  opTable.openTableVersion = VERSION;
   exports('opTable', opTable);
 });

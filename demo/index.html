@@ -57,6 +57,16 @@
 			margin-top: 58px;
 		}
 
+		.version-show {
+			margin-left: 6px;
+			color: #fff;
+		}
+
+		.version-show:hover {
+			color: #fff;
+			border-bottom: #dedede solid 1px;
+		}
+
 		/*码云 数据*/
 		.gitee-info a {
 			margin-right: 10px;
@@ -142,8 +152,8 @@
 
 		/*定位导航 弹出层*/
 		#ul-location {
-			height: auto;
-			min-height: 300px;
+			height: 260px;
+			overflow-y: scroll;
 			margin-top: 10px;
 			display: list-item;
 		}
@@ -242,6 +252,9 @@
 		/*	.opTable-open-td tr:hover {
 				background-color: #fff !important;
 			}*/
+		.span-href {
+			color: #1E9FFF;
+		}
 
 	</style>
 </head>
@@ -250,7 +263,10 @@
 <div class='main-div'>
 	<div class="div-img-logo">
 		<img src="static/OPTable.png"/>
-		<span class="layui-badge layui-bg-blue">使用手册</span>
+		<span class="layui-badge layui-bg-blue">使用手册<a class="version-show"
+																									 href="https://gitee.com/Hbangmao/layui-op-table/releases"
+																									 target="_blank"></a></span>
+
 	</div>
 	<div class="value-group">
 
@@ -292,7 +308,6 @@
 					</div>
 				</div>
 			</div>
-
 
 			<div class="div-value-item">
 				<div class="item-min-title">作者</div>
@@ -360,10 +375,20 @@
 			</div>
 
 			<div class="div-value-item">
-				<div class="layui-elem-quote"><a name="demo-kpzx">可配属性</a></div>
-				<span class="span-hint">render()函数 支持 layui table 所参数</span>
+				<div class="layui-elem-quote"><a name="demo-kpzx">可配属性(全局)</a></div>
+				<span class="span-hint">render()函数 支持 layui table 所参数， layui.opTable.render({})</span>
 				<div class="item-child">
 					<table id='demo-kpzx' lay-filter='demo-kpzx'></table>
+				</div>
+			</div>
+
+			<div class="div-value-item">
+				<div class="layui-elem-quote"><a name="demo-kpzx-cols">表头参数(Cols)</a></div>
+				<span class="span-hint">Cols 表头配置项 （继承自layui.table，支持项：）
+					<a target="_blank" href="https://www.layui.com/doc/modules/table.html#cols"
+						 style="color: #1E9FFF">详情</a></span>
+				<div class="item-child">
+					<table id='demo-kpzx-cols' lay-filter='demo-kpzx-cols'></table>
 				</div>
 			</div>
 
@@ -386,15 +411,15 @@
 			</div>
 
 			<div class="div-value-item">
-				<div class="layui-elem-quote"><a name="href-op-table">展开显示表格</a></div>
-				<span class="span-hint">当展开内容数据结构为列表时</span>
+				<div class="layui-elem-quote"><a name="href-op-tree">展开显示表格</a></div>
+				<span class="span-hint">展开显示(普通表格|树形表格)，配置属性（openTable）</span>
 				<div class="item-child">
-					<table id='test1' lay-filter='test1'></table>
+					<table id='test-tree' lay-filter='test-tree'></table>
 
 					<div class="item-open-code">
 						<div class="code-open">展开代码</div>
 						<div class="code-group">
-							<pre class='layui-code layui-code-test1'></pre>
+							<pre class='layui-code layui-code-tree'></pre>
 							<span>收起代码</span>
 						</div>
 					</div>
@@ -447,7 +472,6 @@
 				</div>
 			</div>
 
-
 		</div>
 
 	</div>
@@ -463,16 +487,10 @@
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='openAll'>展开全部</a>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='closeAll'>关闭全部</a>
 </script>
-
-<script type="text/html" id="toolTableDemo">
-	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='getChildTable'>查看当前 Child Table 对象</a>
-</script>
-
 <script type='text/html' id='barDemo'>
 	<a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a>
 	<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a>
 </script>
-
 <script type="text/html" id="moreDemo">
 
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='reload'>重载</a>
@@ -486,6 +504,10 @@
 	<a class='layui-btn   layui-btn-xs' lay-event='closeIndex'>关闭(指定下标)</a>
 	<a class='layui-btn   layui-btn-xs' lay-event='toggleOpenIndex'>toggle(指定下标)</a>
 
+</script>
+<script type="text/html" id="treeTable">
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='openTreeChildTable'>展开全部子表</a>
+	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='closeTreeChildTable'>关闭全部子表</a>
 </script>
 <script type='text/html' id='toolDemoIconSet'>
 	<a class='layui-btn  layui-btn-primary layui-btn-xs' lay-event='setOpenColumn'>将展开显示在3列</a>
@@ -502,7 +524,7 @@
   }).use(['opTable'], function () {
 
     setTimeout(function () {
-      layer.msg("Hello Word . Welcome to OPTable ! ");
+      layer.msg("Hello Word . ");
     }, 400);
 
     var opTable = layui.opTable.render({
@@ -530,7 +552,7 @@
         , {field: 'score', title: '分数', edit: true}
       ]
       , onEdit: function (data) {
-        layer.msg("修改内容已输出到日志窗口");
+        layer.msg(JSON.stringify(data));
       }, openType: 0
     });
 
@@ -552,84 +574,7 @@
   });
 </script>
 
-<!--2、展开 table 案例-->
-<script id='layui-code-test1'>
-  layui.config({
-    base: '../opTable'
-  }).extend({
-    opTable: '/opTable'
-  }).use(['opTable'], function () {
-    var opTable = layui.opTable.render({
-      elem: '#test1'
-      , id: '#test1'
-      , toolbar: "#toolTableDemo"
-      , url: 'static/test.json'
-      , cols: [[
-        {field: 'id', title: 'ID', sort: true}
-        , {field: 'username', title: '用户名', edit: true}
-        , {field: 'city', title: '城市', edit: true}
-      ]],
-
-      /**
-       * 展开显示表格 参数支持layui所有参数
-       * @param itemData 当前行数据
-       * @returns 支持 layui table 的所有配置参数
-       *
-       * 说明子表的 lay-filter='filter' 值与ID参数相同(去掉 # .)
-       */
-      openTable: function (itemData) {
-
-        return {
-          elem: '#child' + itemData.LAY_INDEX
-          , id: 'child' + itemData.LAY_INDEX
-          , url: 'static/test2.json'
-          , page: true
-          , where: {id: itemData.id}
-          , cols: [[
-            {field: 'id', title: 'ID', edit: true}
-            , {field: 'username', title: '用户名'}
-            , {field: 'logins', title: '登录名'}
-            , {field: 'city', title: '城市'}
-            , {field: 'classify', title: '职业'}
-            , {field: 'wealth', title: '财产值'}
-            , {field: 'experience', title: '人气值'}
-            , {field: 'score', title: '分数'}
-            , {title: '操作', toolbar: '#barDemo', width: 150}
-          ]],
-          done: function () {
-            //  监听子表 修改
-            layui.table.on('edit(' + 'child' + itemData.LAY_INDEX + ')', function (obj) {
-              layer.msg(JSON.stringify(obj.data, null, "\t"));
-            });
-          }
-        }
-      }
-      , openType: 1
-
-      // 发生修改时回调
-      , onEdit: function (obj) {
-        console.log(obj);
-      }
-    });
-
-    setTimeout(function () {
-      layui.$('.layui-code-test1').text(layui.$('#layui-code-test1').html())
-    }, 20);
-
-
-    // 监听工具栏
-    layui.table.on('toolbar(test1)', function (obj) {
-      if (obj.event === "getChildTable") {
-        var child = opTable.config.childTable;
-        console.log(child);
-        layer.msg(child ? child.config.id : "未创建子表：null");
-      }
-    });
-
-  });
-</script>
-
-<!--3、网络加载 案例-->
+<!--2、网络加载 案例-->
 <script id='layui-code-test2'>
   layui.config({
     base: '../opTable'
@@ -700,7 +645,7 @@
   });
 </script>
 
-<!--4、普通的完整操作-->
+<!--3、普通的完整操作-->
 <script id='layui-code-test3'>
   layui.config({
     base: '../opTable'
@@ -714,7 +659,7 @@
       , toolbar: '#moreDemo'
       , cols: [[
         {field: 'id', title: 'ID', sort: true}
-        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'username', title: '用户名', opHelp: {text: '主要用于论坛中作为昵称展示。', tipOpt: {}}, edit: true}
         , {field: 'city', title: '城市', edit: true}
         , {title: '操作', toolbar: '#barDemo', width: 150, align: 'center'}
       ]]
@@ -722,7 +667,7 @@
       //展开的列配置
       , openCols: [
         //  1、普通文本
-        {field: 'sign', title: '签名'}
+        {field: 'sign', title: '签名', opHelp: {text: '设置属于你的签名吧 。', tipOpt: {}}}
         //	2、自定义渲染内容
         , {
           field: 'wealth', width: 137, title: '财富', templet: function (item) {
@@ -785,7 +730,7 @@
 
       //监听修改
       , onEdit: function (obj) {
-        layer.msg("已输出到日志窗口");
+        layer.msg("修改内容：已输出到日志窗口");
         console.log(obj)
       }
       /**
@@ -812,7 +757,7 @@
        * @param itemIndex 展开行下标
        */
       onClose: function (itemData, itemIndex) {
-        console.log("onClose",itemData)
+        console.log("onClose", itemData)
       },
       // 当展开全部时回调
       onOpenAll: function () {
@@ -854,11 +799,6 @@
       else if (obj.event === "getLayuiTable") {
         layer.msg("已输出到日志窗口");
         console.log(opTable.config.table)
-      }
-      // 3、获取 ChildTable 对象
-      else if (obj.event === "getChildTable") {
-        layer.msg("已输出到日志窗口");
-        console.log(opTable.config.childTable)
       }
       // 4、水平或垂直排列内容
       else if (obj.event === "opOrientation") {
@@ -907,7 +847,7 @@
   });
 </script>
 
-<!--5、图标配置-->
+<!--4、图标配置-->
 <script id='layui-code-icon-setting'>
   layui.config({
     //  配置 layui 第三方扩展组件存放的基础目录
@@ -982,6 +922,107 @@
   });
 </script>
 
+<!--5、展开显示表格-->
+<script id='href-op-tree'>
+  layui.config({
+    base: '../opTable'
+  }).extend({
+    opTable: '/opTable'
+  }).use(['opTable'], function () {
+    var opTable = layui.opTable.render({
+      elem: '#test-tree'
+      , id: '#test-tree'
+      , url: 'static/test.json'
+      , cols: [[
+        {field: 'id', title: 'ID', sort: true}
+        , {field: 'username', title: '用户名', edit: true}
+        , {field: 'city', title: '城市', edit: true}
+      ]]
+      /**
+       * 展开显示树形表格
+       * @param itemData 当前行数据
+       * @returns
+       *
+       * 说明子表的 lay-filter='filter' 值与ID参数相同(去掉 # .)
+       */
+      , openTable: function (itemData) {
+        return {
+          elem: '#child_1_' + itemData.LAY_INDEX
+          , id: 'child_1_' + itemData.LAY_INDEX
+          , url: 'static/test2.json'
+          , page: true
+          , cols: [[
+            {field: 'id', title: 'ID', edit: true}
+            , {field: 'username', title: '用户名'}
+            , {field: 'logins', title: '登录名'}
+          ]]
+          , openTable: function (itemData) {
+            return {
+              elem: '#child_2_' + itemData.LAY_INDEX
+              , id: 'child_2_' + itemData.LAY_INDEX
+              , url: 'static/test2.json'
+              , page: true
+              , cols: [[
+                {field: 'id', title: 'ID', edit: true}
+                , {field: 'username', title: '用户名'}
+                , {field: 'logins', title: '登录名'}
+              ]]
+              , openTable: function (itemData) {
+                return {
+                  elem: '#child_3_' + itemData.LAY_INDEX
+                  , id: 'child_3_' + itemData.LAY_INDEX
+                  , url: 'static/test2.json'
+                  , openVisible: false
+                  , cols: [[
+                    {field: 'id', title: 'ID', edit: true}
+                    , {field: 'username', title: '用户名'}
+                    , {field: 'logins', title: '登录名'}
+                    , {field: 'city', title: '城市'}
+                    , {field: 'classify', title: '职业'}
+                    , {field: 'wealth', title: '财产值'}
+                    , {field: 'experience', title: '人气值'}
+                    , {field: 'score', title: '分数'}
+                    , {title: '操作', toolbar: '#barDemo', width: 150}
+                  ]]
+                  , done: function () {
+                    //  监听子表 修改
+                    layui.table.on('edit(' + 'child' + itemData.LAY_INDEX + ')', function (obj) {
+                      layer.msg(JSON.stringify(obj.data, null, "\t"));
+                    });
+                  }
+                  , onEdit: function (data) {
+                    console.log("表格4修改", data)
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      , openType: 1
+      , onEdit: function (data) {
+        console.log("表格1修改", data)
+        layer.msg(JSON.stringify(data));
+      }
+    });
+
+
+    // 监听工具栏
+    layui.table.on('toolbar(test-tree)', function (obj) {
+      if (obj.event === 'openTreeChildTable') {
+        opTable.openTreeChildTable();
+      } else if (obj.event === 'closeTreeChildTable') {
+        opTable.closeTreeChildTable();
+      }
+
+    });
+
+    setTimeout(function () {
+      layui.$('.layui-code-tree').text(layui.$('#href-op-tree').html())
+    }, 20);
+  });
+</script>
+
 <!--页面代码-->
 <script>
   layui.config({
@@ -993,6 +1034,8 @@
 
     var root = {
       init: function () {
+        $(".version-show").html('V ' + layui.opTable.openTableVersion);
+
         layer.open({
           type: 1
           , title: '导航'
@@ -1002,15 +1045,16 @@
           , shadeClose: false
           , closeBtn: 1
           , shade: 0
-          , offset: ['40%', '90%']
+          , offset: ['30%', '90%']
           , success: function (layero, index) {
             var items = [
               {title: "Hello Word", href: 'href-demo'},
               {title: "下载", href: 'download'},
-              {title: "可配属性", href: 'demo-kpzx'},
+              {title: "可配属性(全局)", href: 'demo-kpzx'},
+              {title: "表头参数(Cols)", href: 'demo-kpzx-cols'},
               {title: "全局方法", href: 'demo-qjff'},
               {title: "回调方法", href: 'demo-hdhs'},
-              {title: "展开显示表格", href: 'href-op-table'},
+              {title: "展开显示表格", href: 'href-op-tree'},
               {title: "展开从网络加载", href: 'href-op-network'},
               {title: "图标配置", href: 'href-icon-setting'},
               {title: "相关动态操作", href: 'href-more'}
@@ -1053,14 +1097,14 @@
 
 
         this.initTableKpzx();
+        this.initTableKpzxCols();
         this.initTableQjff();
         this.initTableHdhs();
 
         root.initScroll();
       },
       // 初始化 地址栏参数滚动
-      initScroll: function () {
-
+      initScroll: function (value, openCode) {
         function getValue(name, def) {
           var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
           var r = decodeURI(window.location.search).substr(1).match(reg);
@@ -1070,13 +1114,19 @@
           return def;
         }
 
-        var value = getValue("href");
+        value = value || getValue("href");
         // 滚动到指定位置
         if (value) {
           setTimeout(function () {
             var dom = layui.$("a[data='" + value + "']");
             dom.click();
             dom.length <= 0 && layer.msg("无法定位：" + value);
+            setTimeout(function () {
+              // 是否展开代码区域
+              if (openCode) {
+                $('a[name="' + value + '"]').parent().parent().find(".code-open").click();
+              }
+            }, 100);
           }, 100);
         }
 
@@ -1086,8 +1136,9 @@
           this.initTableKpzx(openIndex);
         }
 
+
       }
-      // 可配置属性
+      // 可配置属性(全局)
       , initTableKpzx: function (openIndex) {
 
         /*可配属性*/
@@ -1095,7 +1146,7 @@
           elem: '#demo-kpzx'
           , id: '#demo-kpzx'
           , cols: [[
-            {field: 'parameter', title: '参数', width: 180}
+            {field: 'parameter', title: '参数名称', width: 180}
             , {field: 'type', title: '类型', width: 120}
             , {field: 'doc', title: '描述'}
             , {field: 'version', title: '版本', width: 160}
@@ -1107,7 +1158,8 @@
               doc: '是否支持展开操作，默认：true 开启可展开操作 ',
               code: "",
               version: 'v1.3'
-            }, {
+            },
+            {
               parameter: 'isOpenAllClick',
               type: 'boolean',
               doc: '是否支持展开全部',
@@ -1180,6 +1232,72 @@
               type: 'Number',
               doc: '关闭动画执行时长(毫秒) 默认：100',
               code: ""
+            }
+          ]
+          , limit: 20
+          , openCols: [{
+            field: 'code', title: '示例值', templet: function (it) {
+              if (!it.code) {
+                return "暂无示例代码"
+              }
+              return "<h5>示例代码</h5><pre class='layui-code'>" + it.code + "</pre>";
+            }
+          }]
+        }).openIndex(openIndex);
+      }
+      // 可配置属性(Cols)item
+      , initTableKpzxCols: function (openIndex) {
+
+        /*可配属性*/
+        layui.opTable.render({
+          elem: '#demo-kpzx-cols'
+          , id: '#demo-kpzx-cols'
+          , cols: [[
+            {field: 'parameter', title: '参数名称', width: 180}
+            , {field: 'type', title: '类型', width: 120}
+            , {field: 'par', title: '所属父级'}
+            , {field: 'doc', title: '描述'}
+            , {field: 'version', title: '版本', width: 160}
+          ]]
+          , data: [
+            {
+              parameter: 'opHelp',
+              type: 'Object',
+              par: 'openCols|Cols',
+              doc: '显示帮助文字',
+              version: 'v1.3',
+              code: " ... openCols: [\n"
+                  + "        //  1、普通文本\n"
+                  + "        {field: 'sign', title: '签名', <span style='color:red'>opHelp</span>: {text: '设置属于你的签名吧 。', tipOpt: {}}}}\n"
+                  + "] ..."
+            },
+            {
+              parameter: 'templet',
+              type: 'function',
+              par: 'openCols',
+              doc: '区别于 onDraw，不会保留展开区域标题文字。',
+              version: 'v1.3',
+              code: ""
+            },
+            {
+              parameter: 'onDraw',
+              type: 'function',
+              par: 'openCols',
+              doc: '区别于 templet，会保留展开区域小项标题文字。 <span class="span-href" name="href-more" openCode="true">详情</span>',
+              version: 'v1.3',
+              code: "... openCols: [ {\n"
+                  + "          field: 'score', title: '分数', <span style='color:red'>onDraw</span>: function (it) {\n"
+                  + "            return it.score + \" keg\"\n"
+                  + "          }\n"
+                  + "        }\n] "
+            },
+            {
+              parameter: 'type',
+              type: 'text',
+              par: 'openCols',
+              doc: '展开小项类型，目前支持：[select]  <span class="span-href" name="href-more" openCode="true">详情</span>',
+              version: 'v1.3',
+              code: ''
             }
           ]
           , limit: 20
@@ -1317,6 +1435,18 @@
       root.init();
     }, 50)
 
+    setTimeout(function () {
+      // 滚动页面
+      layui.$(".span-href").click(function () {
+        var that = $(this);
+        var name = that.attr("name")
+            , openCode = that.attr("openCode");
+
+        root.initScroll(name, openCode);
+      });
+
+    }, 2000);
+
   });
 
 
@@ -1337,6 +1467,7 @@
         layer.msg("编辑：" + JSON.stringify(obj.data, null, "\t"));
       }
     });
+
 
   })
 </script>

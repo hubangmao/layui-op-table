@@ -119,3 +119,23 @@ html #layuicss-opTable {
     height: 80px;
     padding-top: 16px;
 }
+
+/*帮助图标*/
+.opTable-span-help {
+    width: 16px;
+    height: 12px;
+    user-select: none;
+    background: url(icon/optable-cols-help.svg) 0 0 no-repeat;
+    background-size: 16px 12px !important;
+    margin-left: 6px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.op-span-help-close {
+    display: inline-block;
+    margin-left: 4px;
+    color: #1E9FFF;
+    cursor: pointer;
+}
