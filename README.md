@@ -134,7 +134,8 @@ Layui Table 数据列数过多解决方案。
 ![展开显示表格](https://images.gitee.com/uploads/images/2020/0315/014136_eb18a686_734930.png "demo-open-table.png")
 
 
-##### 展开显示树形表格 _[演示](https://hbangmao.gitee.io/OPTable/layui-op-table/demo/index.html?href=href-op-tree)_ 
+##### 展开显示树形表格
+ _[演示](https://hbangmao.gitee.io/OPTable/layui-op-table/demo/index.html?href=href-op-tree)_ 
 
 ```
   var opTable = layui.opTable.render({
@@ -274,7 +275,34 @@ layui.opTable.render({
 ##### 效果预览
 ![网络加载内容](https://images.gitee.com/uploads/images/2020/0315/014826_355e5d44_734930.png "demo-network.png")
 
-#### 关于作者
+### 拓展
+
+##### 列描述
+
+
+```
+// 有时候我们需要对某一数据列新增说明，来提高使用者对该项数据的深入了解 。
+
+...
+ cols: [[
+          {field: 'username', title: '用户名', opHelp: {text: '主要用于论坛中作为昵称展示。', tipOpt: {}}, edit: true}
+      ]]
+...
+
+
+...
+ openCols: [
+        {field: 'sign', title: '签名', opHelp: {text: '设置属于你的签名吧 。', tipOpt: {}}}
+      ]
+...
+
+```
+##### 效果预览
+
+![数据列描述](https://images.gitee.com/uploads/images/2020/1024/113553_b72461cd_734930.png "数据列描述.png")
+
+
+### 关于作者
 
 
 ```
